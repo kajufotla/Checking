@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Advanced Client-Side PDF Compressor | Hamid Hussain & Co.</title>
+    <meta name="description" content="Securely compress PDF files directly in your browser without losing quality. 100% client-side processing, no data uploaded to any server. Powered by Hamid Hussain & Co.">
+    <meta name="keywords" content="pdf compressor, client-side pdf compression, reduce pdf size, optimize pdf, Hamid Hussain & Co., webassembly pdf">
+    <meta name="author" content="Hamid Hussain & Co.">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="Advanced Client-Side PDF Compressor">
+    <meta property="og:description" content="Compress PDF files safely inside your browser. No server uploads.">
+    <meta property="og:type" content="website">
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; 
+            scroll-behavior: smooth; 
+            overscroll-behavior-y: none;
+        }
+
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border: 1px solid rgba(226, 232, 240, 0.8); 
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform, backdrop-filter;
+            backface-visibility: hidden;
+        }
+
+        .content-section { contain: content; }
+
+        .gpu-accelerate { transform: translateZ(0); will-change: transform, opacity; }
+        .will-change-opacity { will-change: opacity; transform: translateZ(0); }
+
+        .pt-safe { padding-top: env(safe-area-inset-top); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .drag-over { border-color: #3b82f6 !important; background-color: #eff6ff !important; }
+
+        .preview-scroll::-webkit-scrollbar { height: 6px; }
+
+        /* Helper for JS functionality */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <main id="tool-container" class="pt-safe">
+        <div id="pdf-compressor-wrapper" class="glass-panel tool-wrapper">
+            <input type="file" id="pdf-upload" accept="application/pdf">
+            
+            <select id="compression-level">
+                <option value="low">Low Compression (High Quality)</option>
+                <option value="medium" selected>Medium Compression (Balanced)</option>
+                <option value="high">High Compression (Smaller Size)</option>
+            </select>
+            
+            <button id="execute-btn" class="gpu-accelerate">Compress PDF</button>
+
+            <div id="compressor-results" class="hidden content-section">
+                <p>Compressed Size: <span id="compressed-size"></span></p>
+                <p>Compression Ratio: <span id="compression-ratio"></span></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 1. BLOB WORKER ENGINE
+        const workerCode = `
+            importScripts(new URL('gs.js', location.href).href);
+
+            self.onmessage = async function(e) {
+                const { fileData, level, jobId } = e.data;
+
+                try {
+                    let pdfSettings = "/screen"; 
+                    if (level === 'medium') {
+                        pdfSettings = "/ebook"; 
+                    } else if (level === 'low') {
+                        pdfSettings = "/printer"; 
+                    }
+
+                    const args = [
+                        "gs",
+                        "-sDEVICE=pdfwrite",
+                        "-dCompatibilityLevel=1.4",
+                        "-dPDFSETTINGS=" + pdfSettings,
+                        "-dNOPAUSE",
+                        "-dQUIET",
+                        "-dBATCH",
+                        "-dPrinted=false",
+                        "-dColorImageDownsampleType=/Bicubic", 
+                        "-dGrayImageDownsampleType=/Bicubic",
+                        "-dMonoImageDownsampleType=/Bicubic",
+                        "-dDetectDuplicateImages=true",        
+                        "-sOutputFile=output.pdf",
+                        "input.pdf"
+                    ];
+
+                    const Module = await Ghostscript();
+                    Module.FS.writeFile('input.pdf', new Uint8Array(fileData));
+                    const exitCode = Module.callMain(args);
+
+                    if (exitCode === 0) {
+                        const outputData = Module.FS.readFile('output.pdf');
+                        Module.FS.unlink('input.pdf');
+                        Module.FS.unlink('output.pdf');
+
+                        self.postMessage({
+                            jobId: jobId,
+                            success: true,
+                            data: outputData.buffer
+                        }, [outputData.buffer]); 
+                    } else {
+                        try { Module.FS.unlink('input.pdf'); } catch(err){}
+                        try { Module.FS.unlink('output.pdf'); } catch(err){}
+                        throw new Error("Ghostscript engine exited with code " + exitCode);
+                    }
+                } catch (error) {
+                    self.postMessage({
+                        jobId: jobId,
+                        success: false,
+                        error: error.message || "Compression engine failed."
+                    });
+                }
+            };
+        `;
+
+        // 2. COMPRESSION ENGINE WRAPPER
+        class PDFCompressorEngine {
+            constructor() {
+                const blob = new Blob([workerCode], { type: 'application/javascript' });
+                const workerUrl = URL.createObjectURL(blob);
+                
+                this.worker = new Worker(workerUrl);
+                this.jobs = new Map();
+                this.jobCounter = 0;
+
+                this.worker.onmessage = (e) => {
+                    const { jobId, success, data, error } = e.data;
+                    if (this.jobs.has(jobId)) {
+                        const { resolve, reject } = this.jobs.get(jobId);
+                        if (success) {
+                            resolve(new Blob([data], { type: 'application/pdf' }));
+                        } else {
+                            reject(new Error(error));
+                        }
+                        this.jobs.delete(jobId);
+                    }
+                };
+            }
+
+            async compress(arrayBuffer, level = 'medium') {
+                const jobId = this.jobCounter++;
+                return new Promise((resolve, reject) => {
+                    this.jobs.set(jobId, { resolve, reject });
+                    const bufferCopy = arrayBuffer.slice(0);
+                    this.worker.postMessage({
+                        jobId: jobId,
+                        fileData: bufferCopy,
+                        level: level
+                    }, [bufferCopy]); 
+                });
+            }
+            
+            terminate() {
+                this.worker.terminate();
+            }
+        }
+
+        // 3. MAIN PDF COMPRESSOR APP
+        window.ToolsRegistry = window.ToolsRegistry || {};
+        
+        (function() {
+            const toolId = 'pdf-compressor'; 
+            window.ToolsRegistry[toolId] = window.ToolsRegistry[toolId] || {};
+
+            window.ToolsRegistry[toolId].process = async function (files, engine, ui, PDFDocument) {
+                if (!files || files.length === 0) {
+                    throw new Error("Please upload required file(s).");
+                }
+
+                if (!window.pdfCompressorApp) {
+                    window.pdfCompressorApp = new PDFCompressorApp();
+                }
+
+                await window.pdfCompressorApp.handleFile(files[0]);
+
+                const selectElement = document.getElementById('compression-level');
+                const level = selectElement ? selectElement.value : 'medium';
+                
+                return await window.pdfCompressorApp.processViaClient(level, ui, PDFDocument);
+            };
+
+            window.ToolsRegistry[toolId].cleanup = function () {
+                if (window.pdfCompressorApp) {
+                    window.pdfCompressorApp.resetUI();
+                    window.pdfCompressorApp = null;
+                }
+            };
+        })();
+
+        class PDFCompressorApp {
+            constructor() {
+                this.MAX_FILE_SIZE = 150 * 1024 * 1024; 
+                this.ALLOWED_TYPES = ['application/pdf'];
+
+                this.currentFile = null;
+                this.currentArrayBuffer = null;
+                this.compressedBlob = null;
+                this.isProcessing = false;
+                
+                this.engine = new PDFCompressorEngine(); 
+
+                this.initializeElements();
+            }
+
+            initializeElements() {
+                this.compressionLevelSelect = document.getElementById('compression-level');
+                this.compressedSizeDisplay = document.getElementById('compressed-size');
+                this.compressionRatioDisplay = document.getElementById('compression-ratio');
+                this.resultsPanel = document.getElementById('compressor-results');
+            }
+
+            async handleFile(file) {
+                if (!this.ALLOWED_TYPES.includes(file.type)) {
+                    throw new Error('Invalid format. Please upload a valid PDF document.');
+                }
+                if (file.size > this.MAX_FILE_SIZE) {
+                    throw new Error('File exceeds maximum size.');
+                }
+                if (file.size === 0) {
+                    throw new Error('The selected file is empty or corrupted.');
+                }
+
+                this.currentFile = file;
+                this.currentArrayBuffer = await this.readFileAsync(file);
+            }
+
+            async processViaClient(level, ui, PDFDocument) {
+                if(ui) ui.updateProgress(20);
+                
+                try {
+                    if(ui) ui.updateProgress(50);
+                    this.compressedBlob = await this.engine.compress(this.currentArrayBuffer, level);
+                    if(ui) ui.updateProgress(100);
+                    
+                    this.showResults();
+
+                    const originalName = this.currentFile.name;
+                    const nameWithoutExt = originalName.lastIndexOf('.pdf') !== -1 ? originalName.substring(0, originalName.lastIndexOf('.pdf')) : originalName;
+
+                    return {
+                        blob: this.compressedBlob,
+                        filename: nameWithoutExt + '_optimized.pdf'
+                    };
+                } catch (error) {
+                    throw new Error('Compression failed: ' + error.message);
+                }
+            }
+
+            showResults() {
+                if (!this.resultsPanel) this.resultsPanel = document.getElementById('compressor-results');
+                if (this.resultsPanel) this.resultsPanel.classList.remove('hidden');
+
+                const originalSize = this.currentFile.size;
+                const newSize = this.compressedBlob.size;
+                let reductionPercentage = ((originalSize - newSize) / originalSize) * 100;
+                
+                const sizeDisplay = document.getElementById('compressed-size');
+                const ratioDisplay = document.getElementById('compression-ratio');
+
+                if (sizeDisplay) sizeDisplay.textContent = this.formatBytes(newSize);
+
+                if (ratioDisplay) {
+                    if (reductionPercentage <= 0) {
+                        ratioDisplay.textContent = 'Highly Optimized';
+                        ratioDisplay.style.color = '#f59e0b'; 
+                    } else {
+                        ratioDisplay.textContent = '-' + reductionPercentage.toFixed(1) + '%';
+                        ratioDisplay.style.color = '#10b981'; 
+                    }
+                }
+            }
+
+            readFileAsync(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => { reader.abort(); reject(new Error('Browser failed to read the file.')); };
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            resetUI() {
+                this.currentFile = null;
+                this.currentArrayBuffer = null;
+                this.compressedBlob = null;
+                this.isProcessing = false;
+                if (this.resultsPanel) this.resultsPanel.classList.add('hidden');
+            }
+
+            formatBytes(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+    </script>
+</body>
+</html>
