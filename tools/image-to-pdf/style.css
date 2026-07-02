@@ -1,0 +1,376 @@
+/* ==========================================
+   VARIABLES & GLASSMORPHISM MATRIX
+   ========================================== */
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.7);
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+    --success: #10b981;
+    
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Configurations */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+.container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Tool Header */
+.tool-header {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+.tool-badge {
+    background-color: #f0fdf4;
+    color: #166534;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #bbf7d0;
+}
+
+/* Layout Engine */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+}
+
+@media (min-width: 992px) {
+    .main-layout {
+        grid-template-columns: 1fr 360px;
+    }
+}
+
+/* Left Workspace Panel */
+.tool-title-area h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.tool-title-area p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+/* Drop Zone Styles */
+.drop-zone {
+    background-color: var(--bg-surface);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: 4rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--primary);
+    background-color: rgba(79, 70, 229, 0.02);
+}
+
+.drop-zone svg {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.main-prompt-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.main-prompt-text span {
+    color: var(--primary);
+}
+
+.sub-prompt-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Previews Dashboard */
+.preview-wrapper {
+    margin-top: 2.5rem;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1.25rem;
+}
+
+.preview-item {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.preview-thumbnail-container {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: calc(var(--radius-md) - 4px);
+    overflow: hidden;
+    background-color: var(--bg-body);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* Remove Floating Handle Button */
+.remove-item-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Right Control Panel */
+.control-panel {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-lg);
+    align-self: start;
+}
+
+.control-panel h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--border);
+    margin: 1.25rem 0;
+}
+
+.setting-group {
+    margin-bottom: 1.5rem;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.setting-group select, .setting-group input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.setting-group select:focus, .setting-group input[type="text"]:focus {
+    border-color: var(--primary);
+}
+
+.slider-label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#quality-display {
+    color: var(--primary);
+}
+
+.setting-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary);
+}
+
+/* Button Structural Elements */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.btn-danger-link {
+    background: transparent;
+    color: var(--danger);
+    font-size: 0.875rem;
+    padding: 0;
+}
+
+.btn-execute-action {
+    background-color: var(--primary);
+    color: white;
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.btn-execute-action:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Global Application States */
+.container-hidden {
+    display: none !important;
+}
+
+.panel-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Processing Modal Architecture */
+.overlay-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-hidden {
+    display: none !important;
+}
+
+.modal-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+}
+
+.spinner-loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    animation: rotateLoop 1s linear infinite;
+}
+
+@keyframes rotateLoop {
+    to { transform: rotate(360deg); }
+}
+
+.modal-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-card p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
