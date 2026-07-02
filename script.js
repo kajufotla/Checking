@@ -190,7 +190,7 @@ class PDFExpertEngine {
 
     // ==========================================
     // 3. UI RENDERING & FILTER LOGIC (CSS-First)
-// ==========================================
+    // ==========================================
     
     /**
      * Render the 100 tools dynamically into HTML structure
@@ -210,8 +210,12 @@ class PDFExpertEngine {
             card.setAttribute('data-id', tool.id);
             card.setAttribute('data-category', tool.category);
 
+            // [CHANGE 1]: Set direct workspace links for active tools, otherwise use hash router anchor
+            const isTargetTool = (tool.id === "jpg-to-pdf" || tool.id === "png-to-pdf");
+            const finalLink = isTargetTool ? "tools/image-to-pdf/index.html" : `#/tool/${tool.id}`;
+
             card.innerHTML = `
-                <a href="#/tool/${tool.id}" class="tool-link" aria-label="${tool.name}"></a>
+                <a href="${finalLink}" class="tool-link" aria-label="${tool.name}"></a>
                 <div class="tool-icon" data-icon="${tool.icon}">
                     <!-- SVG placeholders dynamically customizable by CSS selectors -->
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -226,7 +230,9 @@ class PDFExpertEngine {
 
             // Action dispatcher inside tool execution
             card.querySelector('.btn').addEventListener('click', (e) => {
-                e.preventDefault();
+                if (!isTargetTool) {
+                    e.preventDefault();
+                }
                 this.launchTool(tool.id);
             });
 
@@ -268,7 +274,13 @@ class PDFExpertEngine {
     launchTool(toolId) {
         this.currentActiveTool = toolId;
         console.log(`Core Engine Action: Launching ${toolId}`);
-        // Here you can inject modal popup triggers or page transitions without hardcoding styling scripts
+        
+        // [CHANGE 2]: Handle routing logic cleanly. If it's the completed tool, allow browser navigation, else trigger alert
+        if (toolId === "jpg-to-pdf" || toolId === "png-to-pdf") {
+            window.location.href = "tools/image-to-pdf/index.html";
+        } else {
+            alert(`${toolId.toUpperCase().replace(/-/g, ' ')} tool is coming soon in the next release batch!`);
+        }
     }
 
     // ==========================================
