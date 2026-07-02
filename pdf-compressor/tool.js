@@ -1,188 +1,227 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const configArea = document.getElementById('config-area');
-    const progressArea = document.getElementById('progress-area');
-    const resultArea = document.getElementById('result-area');
-    const errorArea = document.getElementById('error-area');
-    
-    const fileNameEl = document.getElementById('file-name');
-    const originalSizeEl = document.getElementById('original-size');
-    const btnCancel = document.getElementById('btn-cancel');
-    const btnCompress = document.getElementById('btn-compress');
-    
-    const statOriginal = document.getElementById('stat-original');
-    const statCompressed = document.getElementById('stat-compressed');
-    const statSaved = document.getElementById('stat-saved');
-    
-    const btnDownload = document.getElementById('btn-download');
-    const btnStartOver = document.getElementById('btn-start-over');
-    const btnErrorReset = document.getElementById('btn-error-reset');
-    const errorMessage = document.getElementById('error-message');
-    
-    const progressBar = document.getElementById('progress-bar');
-    const progressStatus = document.getElementById('progress-status');
+/**
+ * PDF Compressor Tool - FIXED PRODUCTION VERSION
+ * Works in SPA + Multi-tool websites
+ */
 
+(function () {
     let currentFile = null;
     let currentWorker = null;
     let compressedBlob = null;
+    let initialized = false;
 
-    // Format Bytes
-    const formatBytes = (bytes, decimals = 2) => {
-        if (!+bytes) return '0 Bytes';
-        const k = 1024;
-        const dm = decimals < 0 ? 0 : decimals;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-    };
+    // Prevent double init
+    function initPDFCompressor() {
+        if (initialized) return;
+        initialized = true;
 
-    // UI State Management
-    const showView = (viewId) => {
-        [dropZone, configArea, progressArea, resultArea, errorArea].forEach(el => el.classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
-    };
+        // DOM Elements
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const configArea = document.getElementById('config-area');
+        const progressArea = document.getElementById('progress-area');
+        const resultArea = document.getElementById('result-area');
+        const errorArea = document.getElementById('error-area');
 
-    // File Handling
-    const handleFile = (file) => {
-        if (!file || file.type !== 'application/pdf') {
-            showError('Please upload a valid PDF file.');
+        const fileNameEl = document.getElementById('file-name');
+        const originalSizeEl = document.getElementById('original-size');
+        const btnCancel = document.getElementById('btn-cancel');
+        const btnCompress = document.getElementById('btn-compress');
+
+        const statOriginal = document.getElementById('stat-original');
+        const statCompressed = document.getElementById('stat-compressed');
+        const statSaved = document.getElementById('stat-saved');
+
+        const btnDownload = document.getElementById('btn-download');
+        const btnStartOver = document.getElementById('btn-start-over');
+        const btnErrorReset = document.getElementById('btn-error-reset');
+        const errorMessage = document.getElementById('error-message');
+
+        const progressBar = document.getElementById('progress-bar');
+        const progressStatus = document.getElementById('progress-status');
+
+        // Safety check
+        if (!dropZone || !fileInput || !btnCompress) {
+            console.error("PDF Compressor: DOM not ready or missing elements");
             return;
         }
-        currentFile = file;
-        fileNameEl.textContent = file.name;
-        originalSizeEl.textContent = formatBytes(file.size);
-        showView('config-area');
-    };
 
-    // Drag & Drop Events
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        handleFile(e.dataTransfer.files[0]);
-    });
-    fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        // Format bytes
+        const formatBytes = (bytes, decimals = 2) => {
+            if (!+bytes) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+        };
 
-    // Button Events
-    btnCancel.addEventListener('click', () => {
-        currentFile = null;
-        fileInput.value = '';
-        showView('drop-zone');
-    });
+        // View switcher
+        const showView = (viewId) => {
+            [dropZone, configArea, progressArea, resultArea, errorArea]
+                .forEach(el => el && el.classList.add('hidden'));
 
-    btnStartOver.addEventListener('click', () => {
-        currentFile = null;
-        compressedBlob = null;
-        fileInput.value = '';
-        showView('drop-zone');
-    });
+            const target = document.getElementById(viewId);
+            if (target) target.classList.remove('hidden');
+        };
 
-    btnErrorReset.addEventListener('click', () => showView('drop-zone'));
+        // File handler
+        const handleFile = (file) => {
+            if (!file || file.type !== 'application/pdf') {
+                showError("Please upload a valid PDF file.");
+                return;
+            }
 
-    btnDownload.addEventListener('click', () => {
-        if (!compressedBlob) return;
-        const url = URL.createObjectURL(compressedBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `compressed_${currentFile.name}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
+            currentFile = file;
 
-    const showError = (msg) => {
-        errorMessage.textContent = msg;
-        showView('error-area');
-    };
+            fileNameEl.textContent = file.name;
+            originalSizeEl.textContent = formatBytes(file.size);
 
-    // Compression Logic (Worker Bridge)
-    btnCompress.addEventListener('click', () => {
-        if (!currentFile) return;
-        
-        const compressionLevel = document.querySelector('input[name="compression"]:checked').value;
-        showView('progress-area');
-        progressBar.classList.add('indeterminate');
-        progressStatus.textContent = "Initializing compression engine...";
+            showView('config-area');
+        };
 
-        // Terminate existing worker if any
-        if (currentWorker) {
-            currentWorker.terminate();
-        }
+        const showError = (msg) => {
+            if (errorMessage) errorMessage.textContent = msg;
+            showView('error-area');
+        };
 
-        currentWorker = new Worker('worker.js');
+        // Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
 
-        currentWorker.onmessage = (e) => {
-            const { type, payload } = e.data;
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
 
-            switch (type) {
-                case 'READY':
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+
+        // Buttons
+        btnCancel?.addEventListener('click', () => {
+            currentFile = null;
+            fileInput.value = '';
+            showView('drop-zone');
+        });
+
+        btnStartOver?.addEventListener('click', () => {
+            currentFile = null;
+            compressedBlob = null;
+            fileInput.value = '';
+            showView('drop-zone');
+        });
+
+        btnErrorReset?.addEventListener('click', () => {
+            showView('drop-zone');
+        });
+
+        btnDownload?.addEventListener('click', () => {
+            if (!compressedBlob) return;
+
+            const url = URL.createObjectURL(compressedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `compressed_${currentFile.name}`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Compression
+        btnCompress.addEventListener('click', () => {
+            if (!currentFile) return;
+
+            const level = document.querySelector('input[name="compression"]:checked').value;
+
+            showView('progress-area');
+            progressBar.classList.add('indeterminate');
+            progressStatus.textContent = "Starting...";
+
+            if (currentWorker) currentWorker.terminate();
+
+            currentWorker = new Worker('worker.js');
+
+            currentWorker.onmessage = (e) => {
+                const { type, payload } = e.data;
+
+                if (type === 'READY') {
                     progressStatus.textContent = "Reading file...";
+
                     currentFile.arrayBuffer().then(buffer => {
                         currentWorker.postMessage({
                             type: 'COMPRESS',
                             payload: {
                                 fileData: new Uint8Array(buffer),
-                                level: compressionLevel,
+                                level,
                                 fileName: currentFile.name
                             }
                         });
-                    }).catch(() => showError("Failed to read file."));
-                    break;
+                    });
+                }
 
-                case 'PROGRESS':
+                if (type === 'PROGRESS') {
                     progressStatus.textContent = payload;
-                    break;
+                }
 
-                case 'SUCCESS':
+                if (type === 'SUCCESS') {
                     progressBar.classList.remove('indeterminate');
-                    progressBar.style.width = '100%';
+                    progressBar.style.width = "100%";
+
                     handleSuccess(payload.data);
+
                     currentWorker.terminate();
                     currentWorker = null;
-                    break;
+                }
 
-                case 'ERROR':
+                if (type === 'ERROR') {
                     showError(payload);
                     currentWorker.terminate();
                     currentWorker = null;
-                    break;
-            }
-        };
+                }
+            };
 
-        currentWorker.onerror = () => {
-            showError("Web Worker failed to initialize. Ensure gs-worker.js and gs.wasm are present.");
-            if (currentWorker) {
-                currentWorker.terminate();
-                currentWorker = null;
-            }
-        };
-    });
+            currentWorker.onerror = () => {
+                showError("Worker failed to load.");
+            };
+        });
 
-    const handleSuccess = (compressedData) => {
-        compressedBlob = new Blob([compressedData], { type: 'application/pdf' });
-        
-        const originalSize = currentFile.size;
-        const compressedSize = compressedBlob.size;
-        
-        if (compressedSize >= originalSize) {
-            // Note: In reality, sometimes already optimized PDFs can't be compressed further.
-            showError("This PDF is already highly optimized. Compression could not reduce its size further.");
-            return;
+        function handleSuccess(data) {
+            compressedBlob = new Blob([data], { type: 'application/pdf' });
+
+            const original = currentFile.size;
+            const compressed = compressedBlob.size;
+
+            if (compressed >= original) {
+                showError("File already optimized. No compression possible.");
+                return;
+            }
+
+            const saved = (((original - compressed) / original) * 100).toFixed(1);
+
+            statOriginal.textContent = formatBytes(original);
+            statCompressed.textContent = formatBytes(compressed);
+            statSaved.textContent = saved + "%";
+
+            showView('result-area');
         }
 
-        const percentage = (((originalSize - compressedSize) / originalSize) * 100).toFixed(1);
+        console.log("PDF Compressor initialized successfully");
+    }
 
-        statOriginal.textContent = formatBytes(originalSize);
-        statCompressed.textContent = formatBytes(compressedSize);
-        statSaved.textContent = `${percentage}%`;
+    // SAFE GLOBAL EXPORT
+    window.initPDFCompressor = initPDFCompressor;
 
-        showView('result-area');
-    };
-});
+    // Auto init fallback (if standalone page)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPDFCompressor);
+    } else {
+        initPDFCompressor();
+    }
+
+})();
