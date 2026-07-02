@@ -1,926 +1,335 @@
 /**
- * @fileoverview Enterprise-grade architecture for Modern PDF Expert Website.
- * @version 2.0.0
- * @description Highly modular, scalable, and performance-optimized JavaScript architecture.
- * Features: Plugin System, Global State, Virtual Rendering, IndexedDB, Offline-First, i18n, A11y.
- * Supports 500+ PDF tools with a robust component-based ecosystem.
+ * PDFExpert - Core Client-Side Engine (script.js)
+ * Architecture: Modular, Object-Oriented, Performance-Optimized
+ * Features: Local Processing (No Servers), 100 Tools Data Structure
  */
 
-'use strict';
+// ==========================================
+// 1. TOOLS DATABASE (100 TOOLS DATA STRUCTURE)
+// ==========================================
+const PDFExpertTools = [
+    // --- CATEGORY 1: ORGANIZE PDF (1-15) ---
+    { id: "merge-pdf", name: "Merge PDF", category: "organize", icon: "merge", desc: "Combine multiple PDFs into one unified document." },
+    { id: "split-pdf", name: "Split PDF", category: "organize", icon: "split", desc: "Separate pages into independent PDF files." },
+    { id: "delete-pages", name: "Delete Pages", category: "organize", icon: "trash", desc: "Remove specific pages from a PDF document." },
+    { id: "extract-pages", name: "Extract Pages", category: "organize", icon: "extract", desc: "Get a new PDF containing only the pages you need." },
+    { id: "organize-pages", name: "Organize Pages", category: "organize", icon: "layout", desc: "Reorder, rotate, or delete pages visually." },
+    { id: "rotate-pdf", name: "Rotate PDF", category: "organize", icon: "rotate", desc: "Rotate multiple PDF pages simultaneously." },
+    { id: "crop-pdf", name: "Crop PDF", category: "organize", icon: "crop", desc: "Trim the visible margins of your PDF pages." },
+    { id: "n-up-pdf", name: "N-Up PDF", category: "organize", icon: "grid", desc: "Print multiple pages on a single sheet of paper." },
+    { id: "reverse-pdf", name: "Reverse PDF", category: "organize", icon: "reverse", desc: "Invert the page order of your PDF document." },
+    { id: "sort-pdf", name: "Sort PDF Pages", category: "organize", icon: "sort", desc: "Sort pages alphabetically or numerically." },
+    { id: "split-half", name: "Split in Half", category: "organize", icon: "scissors", desc: "Split dual-page layout scans into single pages." },
+    { id: "insert-blank", name: "Insert Blank Page", category: "organize", icon: "blank", desc: "Add empty pages anywhere in your document." },
+    { id: "duplex-merge", name: "Duplex Merge", category: "organize", icon: "duplex", desc: "Merge odd and even page PDFs together." },
+    { id: "booklet-pdf", name: "Booklet Creator", category: "organize", icon: "book", desc: "Convert standard PDF to a printable booklet layout." },
+    { id: "trim-margins", name: "Trim White Margins", category: "organize", icon: "trim", desc: "Automatically remove empty borders from pages." },
 
-// ============================================================================
-// 1. UTILITIES, SECURITY & ERROR HANDLING
-// ============================================================================
+    // --- CATEGORY 2: OPTIMIZE & EDIT (16-35) ---
+    { id: "compress-pdf", name: "Compress PDF", category: "optimize", icon: "compress", desc: "Reduce file size while keeping maximal quality." },
+    { id: "watermark-pdf", name: "Watermark PDF", category: "optimize", icon: "watermark", desc: "Stamp images or text over your PDF files." },
+    { id: "number-pages", name: "Add Page Numbers", category: "optimize", icon: "hash", desc: "Insert running headers/footers with custom styling." },
+    { id: "header-footer", name: "Header & Footer", category: "optimize", icon: "header", desc: "Add custom static text to page margins." },
+    { id: "edit-metadata", name: "Edit Metadata", category: "optimize", icon: "edit", desc: "Change Title, Author, Keywords, and Subject." },
+    { id: "flatten-pdf", name: "Flatten PDF Forms", category: "optimize", icon: "layer", desc: "Make form fields uneditable and merge layers." },
+    { id: "resize-pages", name: "Resize PDF Pages", category: "optimize", icon: "resize", desc: "Change page sizes to A4, Letter, Legal, etc." },
+    { id: "b-and-w", name: "Grayscale PDF", category: "optimize", icon: "contrast", desc: "Convert all colorful elements and images to black & white." },
+    { id: "repair-pdf", name: "Repair PDF", category: "optimize", icon: "wrench", desc: "Fix and recover corrupted structure from broken PDFs." },
+    { id: "deskew-pdf", name: "Deskew PDF", category: "optimize", icon: "align", desc: "Straighten tilted scanned pages automatically." },
+    { id: "add-margins", name: "Add Padding", category: "optimize", icon: "padding", desc: "Add empty margins around document content." },
+    { id: "scale-pdf", name: "Scale Content", category: "optimize", icon: "scale", desc: "Shrink or expand page content without changing page size." },
+    { id: "hyperlink-manager", name: "Manage Hyperlinks", category: "optimize", icon: "link", desc: "Add, edit, or strip external URLs from text." },
+    { id: "remove-annotations", name: "Strip Annotations", category: "optimize", icon: "strip", desc: "Delete comments, highlights, and notes from document." },
+    { id: "sign-pdf", name: "Sign PDF", category: "optimize", icon: "signature", desc: "Draw or import your digital signature securely." },
+    { id: "optimize-web", name: "Optimize for Web", category: "optimize", icon: "globe", desc: "Linearize PDFs for fast byte-range viewing online." },
+    { id: "remove-images", name: "Remove All Images", category: "optimize", icon: "no-image", desc: "Strip graphics out to create text-only drafts." },
+    { id: "compress-images", name: "Compress Images Only", category: "optimize", icon: "img-comp", desc: "Downsample inner graphics without touching text vectors." },
+    { id: "overlay-pdf", name: "Overlay PDFs", category: "optimize", icon: "overlay", desc: "Superimpose two documents on top of each other." },
+    { id: "color-adjust", name: "Color Adjust", category: "optimize", icon: "color", desc: "Modify brightness, contrast, and tint of PDF pages." },
 
-/**
- * Enterprise Utilities for DOM manipulation and performance.
- * @namespace Utils
- */
-const Utils = {
+    // --- CATEGORY 3: CONVERT FROM PDF (36-55) ---
+    { id: "pdf-to-jpg", name: "PDF to JPG", category: "convert-from", icon: "image", desc: "Extract graphics or convert pages to JPG formats." },
+    { id: "pdf-to-png", name: "PDF to PNG", category: "convert-from", icon: "png", desc: "Convert document layouts to high-quality transparent PNGs." },
+    { id: "pdf-to-word", name: "PDF to Word", category: "convert-from", icon: "word", desc: "Extract text layout into editable DOCX file structure." },
+    { id: "pdf-to-excel", name: "PDF to Excel", category: "convert-from", icon: "excel", desc: "Parse structural tables into clean XLSX sheets." },
+    { id: "pdf-to-ppt", name: "PDF to PowerPoint", category: "convert-from", icon: "powerpoint", desc: "Convert static pages into presentations." },
+    { id: "pdf-to-txt", name: "PDF to Text", category: "convert-from", icon: "text", desc: "Extract raw plain text strings from layout structures." },
+    { id: "pdf-to-html", name: "PDF to HTML", category: "convert-from", icon: "html", desc: "Generate fully responsive interactive web markup layouts." },
+    { id: "pdf-to-epub", name: "PDF to EPUB", category: "convert-from", icon: "book-open", desc: "Reflow fixed layout content into standard eBook formats." },
+    { id: "pdf-to-webp", name: "PDF to WebP", category: "convert-from", icon: "webp", desc: "Convert pages into next-gen web image compression formats." },
+    { id: "pdf-to-svg", name: "PDF to SVG", category: "convert-from", icon: "vector", desc: "Export vector elements directly into scalable vector graphics." },
+    { id: "pdf-to-csv", name: "PDF to CSV", category: "convert-from", icon: "csv", desc: "Isolate numeric tables and dump into tabular values." },
+    { id: "pdf-to-json", name: "PDF to JSON", category: "convert-from", icon: "json", desc: "Extract clean structural key-value objects from raw layouts." },
+    { id: "pdf-to-markdown", name: "PDF to Markdown", category: "convert-from", icon: "markdown", desc: "Parse structural layouts into clean readable MD strings." },
+    { id: "pdf-to-rtf", name: "PDF to Rich Text", category: "convert-from", icon: "rtf", desc: "Save text formatting inside standard interoperable RTF." },
+    { id: "pdf-to-tiff", name: "PDF to TIFF", category: "convert-from", icon: "tiff", desc: "Convert multipage high-res documents for printing archives." },
+    { id: "pdf-to-gif", name: "PDF to GIF", category: "convert-from", icon: "gif", desc: "Convert frames or pages into lightweight GIF layouts." },
+    { id: "pdf-to-bmp", name: "PDF to BMP", category: "convert-from", icon: "bmp", desc: "Export pages into raw lossless uncompressed bitmap arrays." },
+    { id: "pdf-to-odt", name: "PDF to ODT", category: "convert-from", icon: "odt", desc: "Convert document to OpenDocument text processing standard." },
+    { id: "pdf-to-ods", name: "PDF to ODS", category: "convert-from", icon: "ods", desc: "Extract data tables directly into OpenDocument Spreadsheets." },
+    { id: "pdf-to-xml", name: "PDF to XML", category: "convert-from", icon: "xml", desc: "Map document nodes directly into hierarchical semantic markup tags." },
+
+    // --- CATEGORY 4: CONVERT TO PDF (56-75) ---
+    { id: "jpg-to-pdf", name: "JPG to PDF", category: "convert-to", icon: "jpg", desc: "Convert JPG images to PDF with adjustable margins." },
+    { id: "png-to-pdf", name: "PNG to PDF", category: "convert-to", icon: "png-in", desc: "Transform high-fidelity transparent PNGs into standard vectors." },
+    { id: "word-to-pdf", name: "Word to PDF", category: "convert-to", icon: "word-in", desc: "Render text formatting elements perfectly into PDF canvas." },
+    { id: "excel-to-pdf", name: "Excel to PDF", category: "convert-to", icon: "excel-in", desc: "Format messy grid sheets into structured printable page views." },
+    { id: "ppt-to-pdf", name: "PowerPoint to PDF", category: "convert-to", icon: "ppt-in", desc: "Freeze slide transitions into beautiful portfolio documents." },
+    { id: "txt-to-pdf", name: "Text to PDF", category: "convert-to", icon: "txt-in", desc: "Convert raw text inputs into multi-page formatted layouts." },
+    { id: "html-to-pdf", name: "HTML to PDF", category: "convert-to", icon: "html-in", desc: "Render live URLs or source codes directly into vectors." },
+    { id: "epub-to-pdf", name: "EPUB to PDF", category: "convert-to", icon: "epub-in", desc: "Convert flowable digital book assets into fixed print documents." },
+    { id: "webp-to-pdf", name: "WebP to PDF", category: "convert-to", icon: "webp-in", desc: "Pack responsive web image formats together into a single file." },
+    { id: "svg-to-pdf", name: "SVG to PDF", category: "convert-to", icon: "svg-in", desc: "Translate complex vector nodes accurately into core PDF paths." },
+    { id: "csv-to-pdf", name: "CSV to PDF", category: "convert-to", icon: "csv-in", desc: "Parse raw values into clean custom borders and clean tables." },
+    { id: "markdown-to-pdf", name: "Markdown to PDF", category: "convert-to", icon: "md-in", desc: "Convert documentation markup directly into standard layout grids." },
+    { id: "json-to-pdf", name: "JSON to PDF", category: "convert-to", icon: "json-in", desc: "Render structural programmatic trees into visual data nodes." },
+    { id: "rtf-to-pdf", name: "RTF to PDF", category: "convert-to", icon: "rtf-in", desc: "Transform rich text strings into production ready formats." },
+    { id: "tiff-to-pdf", name: "TIFF to PDF", category: "convert-to", icon: "tiff-in", desc: "Convert massive uncompressed printing frames into scalable assets." },
+    { id: "gif-to-pdf", name: "GIF to PDF", category: "convert-to", icon: "gif-in", desc: "Flatten frame animations into standard multi-page static views." },
+    { id: "bmp-to-pdf", name: "BMP to PDF", category: "convert-to", icon: "bmp-in", desc: "Convert old uncompressed raster bits into optimized documents." },
+    { id: "odt-to-pdf", name: "ODT to PDF", category: "convert-to", icon: "odt-in", desc: "Render open source text processing files cleanly into canvas paths." },
+    { id: "ods-to-pdf", name: "ODS to PDF", category: "convert-to", icon: "ods-in", desc: "Transform open source sheets cleanly into standard printable arrays." },
+    { id: "xml-to-pdf", name: "XML to PDF", category: "convert-to", icon: "xml-in", desc: "Parse custom tags through visual engines to construct pages." },
+
+    // --- CATEGORY 5: SECURITY & ADVANCED (76-100) ---
+    { id: "protect-pdf", name: "Protect PDF", category: "security", icon: "lock", desc: "Encrypt your PDF with standard strong user passwords." },
+    { id: "unlock-pdf", name: "Unlock PDF", category: "security", icon: "unlock", desc: "Strip password security permissions out of valid targets." },
+    { id: "ocr-pdf", name: "OCR PDF", category: "security", icon: "ocr", desc: "Convert scanned images inside pages into searchable text nodes." },
+    { id: "redact-pdf", name: "Redact PDF", category: "security", icon: "eye-off", desc: "Permanently black-out highly confidential strings or shapes." },
+    { id: "sanitize-pdf", name: "Sanitize PDF", category: "security", icon: "shield", desc: "Strip hidden document objects like javascripts, links and tags." },
+    { id: "digital-seal", name: "Apply Digital Seal", category: "security", icon: "seal", desc: "Embed cryptographically verifiable cryptographic hashes." },
+    { id: "validate-signature", name: "Validate Signature", category: "security", icon: "check-circle", desc: "Check authenticity tokens of signed document components." },
+    { id: "compare-pdf", name: "Compare PDFs", category: "security", icon: "columns", desc: "Analyze visual structural variance between two file variations." },
+    { id: "barcode-generator", name: "Add Barcodes", category: "security", icon: "barcode", desc: "Generate and place programmatic raw barcodes onto surfaces." },
+    { id: "qr-generator", name: "Add QR Codes", category: "security", icon: "qr", desc: "Stitch interactive scannable matrix barcodes straight to layouts." },
+    { id: "extract-images-raw", name: "Extract All Graphics", category: "security", icon: "extract-img", desc: "Rip original asset vectors out without altering pixels." },
+    { id: "extract-text-raw", name: "Extract Fast Text", category: "security", icon: "extract-txt", desc: "Dump string coordinates for analysis." },
+    { id: "pdf-a-converter", name: "PDF/A Converter", category: "security", icon: "archive", desc: "Transform standards into ISO-compliant long term archiving forms." },
+    { id: "linearize-pdf", name: "Fast Web View", category: "security", icon: "bolt", desc: "Reorder internal object stream tables for progressive loading." },
+    { id: "bates-numbering", name: "Bates Numbering", category: "security", icon: "bates", desc: "Apply index codes down operational accounting streams." },
+    { id: "change-permissions", name: "Set Permissions", category: "security", icon: "key", desc: "Allow/restrict operations like modifying layout structure or print resolution." },
+    { id: "compress-heavy", name: "Extreme Compression", category: "security", icon: "weight", desc: "Force aggressive multi-pass compression filters on targets." },
+    { id: "image-compressor", name: "Image Compressor", category: "security", icon: "image-reduce", desc: "Compress standalone JPG, PNG, and WebP images client-side." },
+    { id: "remove-metadata", name: "Strip Metadata", category: "security", icon: "clean", desc: "Wipe all tracking headers, dates, and author logs." },
+    { id: "watermark-image", name: "Image Watermark", category: "security", icon: "img-water", desc: "Layer transparent images onto document layers." },
+    { id: "merge-secure", name: "Secure Merge", category: "security", icon: "lock-merge", desc: "Merge encrypted targets by declaring target secrets." },
+    { id: "split-by-bookmarks", name: "Split by Bookmark", category: "security", icon: "bookmark", desc: "Slice complex structured books at visual outline index nodes." },
+    { id: "split-by-size", name: "Split by Max Size", category: "security", icon: "pie-chart", desc: "Auto-chop massive layouts into manageable bite chunks." },
+    { id: "remove-empty", name: "Drop Blank Pages", category: "security", icon: "ghost", desc: "Auto-detect and drop empty pages using white pixel scanning." },
+    { id: "pdf-to-pdfa", name: "Convert PDF to PDF/A", category: "security", icon: "iso", desc: "Convert standard files to archive standard format." }
+];
+
+// ==========================================
+// 2. CORE HYBRID ENGINE & INITIALIZATION
+// ==========================================
+class PDFExpertEngine {
+    constructor() {
+        this.pdfLibInstance = null;
+        this.currentActiveTool = null;
+        this.uploadedFilesPool = [];
+        
+        this.initDOM();
+        this.loadPDFLib();
+    }
+
     /**
-     * Debounces a function to limit execution rate.
-     * @param {Function} func - Function to debounce.
-     * @param {number} wait - Delay in milliseconds.
-     * @returns {Function}
+     * Load PDF-Lib library asynchronously and completely client-side
      */
-    debounce: (func, wait = 300) => {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    },
-
-    /**
-     * Throttles a function using requestAnimationFrame for 60FPS UI updates.
-     * @param {Function} func - Function to throttle.
-     * @returns {Function}
-     */
-    throttleRAF: (func) => {
-        let ticking = false;
-        return function (...args) {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    func.apply(this, args);
-                    ticking = false;
-                });
-                ticking = true;
+    async loadPDFLib() {
+        try {
+            if (typeof window.PDFLib !== 'undefined') {
+                this.pdfLibInstance = window.PDFLib;
+                console.log("PDF-Lib loaded successfully via window.");
+                return;
             }
-        };
-    },
+            // Dynamic fallback injection
+            const script = document.createElement('script');
+            script.src = "https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js";
+            script.async = true;
+            script.onload = () => {
+                this.pdfLibInstance = window.PDFLib;
+                console.log("PDF-Lib dynamically initialized securely.");
+            };
+            document.head.appendChild(script);
+        } catch (error) {
+            console.error("Critical: Error initializing core client side PDF-Lib engine:", error);
+        }
+    }
 
     /**
-     * Safely queries the DOM.
-     * @param {string} selector - CSS selector.
-     * @param {HTMLElement|Document} [context=document] - Context to search within.
-     * @returns {HTMLElement|null}
+     * DOM elements and main interface wiring
      */
-    $: (selector, context = document) => context.querySelector(selector),
+    initDOM() {
+        this.toolsGrid = document.querySelector('.tools-grid');
+        this.searchBarInput = document.querySelector('.search-bar input');
+        this.categoryFilters = document.querySelectorAll('.category-filter-btn');
+
+        if (this.toolsGrid) {
+            this.renderTools(PDFExpertTools);
+        }
+        this.setupEventHandlers();
+    }
+
+    /**
+     * Safe events registering
+     */
+    setupEventHandlers() {
+        if (this.searchBarInput) {
+            this.searchBarInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+        }
+
+        if (this.categoryFilters) {
+            this.categoryFilters.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const category = e.target.getAttribute('data-category');
+                    this.filterByCategory(category);
+                });
+            });
+        }
+    }
+
+    // ==========================================
+    // 3. UI RENDERING & FILTER LOGIC (CSS-First)
+// ==========================================
     
     /**
-     * Safely queries multiple DOM elements.
-     * @param {string} selector - CSS selector.
-     * @param {HTMLElement|Document} [context=document] - Context to search within.
-     * @returns {NodeList}
+     * Render the 100 tools dynamically into HTML structure
+     * (Visual styles are completely kept inside style.css)
      */
-    $$: (selector, context = document) => context.querySelectorAll(selector),
-
-    /**
-     * Generates a unique secure ID.
-     * @returns {string}
-     */
-    generateId: () => crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
-
-    /**
-     * Security Hardening: Creates a Trusted Types policy if supported.
-     */
-    sanitizer: (() => {
-        if (window.trustedTypes && trustedTypes.createPolicy) {
-            return trustedTypes.createPolicy('default', {
-                createHTML: (string) => string // In production, integrate DOMPurify here
-            });
-        }
-        return { createHTML: (string) => string };
-    })()
-};
-
-/**
- * Error Logging & Recovery System
- * @class ErrorLogger
- */
-class ErrorLogger {
-    constructor() {
-        this.errors = [];
-        this.init();
-    }
-
-    init() {
-        window.addEventListener('error', (e) => this.logError(e.error || e.message, 'window'));
-        window.addEventListener('unhandledrejection', (e) => this.logError(e.reason, 'promise'));
-    }
-
-    /**
-     * Logs and recovers from errors gracefully.
-     * @param {Error|string} error 
-     * @param {string} context 
-     */
-    logError(error, context = 'general') {
-        const errorRecord = { timestamp: Date.now(), error: error?.toString(), context };
-        this.errors.push(errorRecord);
-        console.error(`[Enterprise Boundary - ${context}]`, error);
+    renderTools(toolsList) {
+        this.toolsGrid.innerHTML = '';
         
-        // Dispatch to Analytics (Feature 5)
-        if (window.appEvents) window.appEvents.emit('analytics:event', { name: 'app_error', params: errorRecord });
-    }
-
-    /**
-     * Enterprise Error Boundary wrapper for functions.
-     * @param {Function} fn 
-     * @returns {Function}
-     */
-    static boundary(fn) {
-        return function (...args) {
-            try {
-                return fn.apply(this, args);
-            } catch (err) {
-                if (window.app) window.app.errorLogger.logError(err, fn.name);
-            }
-        };
-    }
-}
-
-// ============================================================================
-// 2. CORE ARCHITECTURE (Events, State, Registry, Plugins)
-// ============================================================================
-
-/**
- * Global Event Manager (Pub/Sub pattern) with Memory Leak Prevention.
- * @class EventBus
- */
-class EventBus {
-    constructor() {
-        this.events = new Map();
-    }
-
-    on(event, listener) {
-        if (!this.events.has(event)) this.events.set(event, new Set());
-        this.events.get(event).add(listener);
-    }
-
-    off(event, listener) {
-        if (this.events.has(event)) this.events.get(event).delete(listener);
-    }
-
-    emit(event, data) {
-        if (!this.events.has(event)) return;
-        this.events.get(event).forEach(listener => {
-            try {
-                listener(data);
-            } catch (error) {
-                console.error(`[EventBus Error] ${event}:`, error);
-            }
-        });
-    }
-}
-
-const appEvents = new EventBus();
-
-/**
- * Global State Manager
- * @class StateManager
- */
-class StateManager {
-    constructor() {
-        this.state = new Proxy({
-            isOnline: navigator.onLine,
-            theme: 'light',
-            activeCategory: 'all',
-            searchQuery: '',
-            toolsLoaded: 0
-        }, {
-            set: (target, property, value) => {
-                target[property] = value;
-                appEvents.emit(`state:${property}`, value);
-                return true;
-            }
-        });
-    }
-
-    get(key) { return this.state[key]; }
-    set(key, value) { this.state[key] = value; }
-}
-
-/**
- * Dynamic Tool Registry supporting 500+ tools
- * @class ToolRegistry
- */
-class ToolRegistry {
-    constructor() {
-        this.tools = new Map();
-    }
-
-    register(toolId, toolConfig) {
-        this.tools.set(toolId, toolConfig);
-        appEvents.emit('tool:registered', toolConfig);
-    }
-
-    getTool(toolId) { return this.tools.get(toolId); }
-    getAll() { return Array.from(this.tools.values()); }
-}
-
-/**
- * Plugin-Based Architecture Manager
- * @class PluginManager
- */
-class PluginManager {
-    constructor(appInstance) {
-        this.app = appInstance;
-        this.plugins = new Map();
-    }
-
-    registerPlugin(name, plugin) {
-        if (typeof plugin.init === 'function') {
-            plugin.init(this.app);
-            this.plugins.set(name, plugin);
-            console.log(`[PluginManager] Loaded: ${name}`);
+        if (toolsList.length === 0) {
+            this.toolsGrid.innerHTML = `<div class="no-results">No tools found matching your request.</div>`;
+            return;
         }
-    }
-}
 
-// ============================================================================
-// 3. STORAGE & RESOURCE MANAGEMENT
-// ============================================================================
+        toolsList.forEach(tool => {
+            const card = document.createElement('article');
+            card.className = 'tool-card';
+            card.setAttribute('data-id', tool.id);
+            card.setAttribute('data-category', tool.category);
 
-/**
- * Advanced Storage Manager (IndexedDB + Cache API Fallback)
- * @class StorageManager
- */
-class StorageManager {
-    constructor() {
-        this.dbName = 'PDFExpertEnterpriseDB';
-        this.dbVersion = 1;
-        this.db = null;
-        this.init();
-    }
+            card.innerHTML = `
+                <a href="#/tool/${tool.id}" class="tool-link" aria-label="${tool.name}"></a>
+                <div class="tool-icon" data-icon="${tool.icon}">
+                    <!-- SVG placeholders dynamically customizable by CSS selectors -->
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="9" y1="3" x2="9" y2="21"></line>
+                    </svg>
+                </div>
+                <h3>${tool.name}</h3>
+                <p>${tool.desc}</p>
+                <span class="btn btn-outline-tool">Open Tool</span>
+            `;
 
-    async init() {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open(this.dbName, this.dbVersion);
-            request.onerror = () => reject(request.error);
-            request.onsuccess = () => { this.db = request.result; resolve(this.db); };
-            request.onupgradeneeded = (e) => {
-                const db = e.target.result;
-                if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings');
-                if (!db.objectStoreNames.contains('fileQueue')) db.createObjectStore('fileQueue');
-            };
-        });
-    }
-
-    async set(storeName, key, value) {
-        if (!this.db) await this.init();
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction(storeName, 'readwrite');
-            const store = tx.objectStore(storeName);
-            const request = store.put(value, key);
-            request.onsuccess = () => resolve();
-            request.onerror = () => reject(request.error);
-        });
-    }
-
-    async get(storeName, key) {
-        if (!this.db) await this.init();
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction(storeName, 'readonly');
-            const store = tx.objectStore(storeName);
-            const request = store.get(key);
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
-    }
-}
-
-/**
- * Dynamic Component & Resource Loader (Code Splitting Prep)
- * @class ResourceLoader
- */
-class ResourceLoader {
-    constructor() {
-        this.loadedScripts = new Set();
-    }
-
-    async loadScript(src) {
-        if (this.loadedScripts.has(src)) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.type = 'module';
-            script.onload = () => {
-                this.loadedScripts.add(src);
-                resolve();
-            };
-            script.onerror = reject;
-            document.head.appendChild(script);
-        });
-    }
-}
-
-// ============================================================================
-// 4. SYSTEM MANAGERS
-// ============================================================================
-
-/**
- * Internationalization (i18n) Ready
- * @class I18nManager
- */
-class I18nManager {
-    constructor() {
-        this.currentLocale = document.documentElement.lang || 'en';
-        this.dictionary = {};
-        this.init();
-    }
-
-    init() {
-        appEvents.on('i18n:change', (locale) => this.setLocale(locale));
-    }
-
-    async setLocale(locale) {
-        this.currentLocale = locale;
-        document.documentElement.lang = locale;
-        // In production, fetch locale JSON via ResourceLoader
-        appEvents.emit('notification', { type: 'success', message: `Language updated to ${locale.toUpperCase()}` });
-    }
-}
-
-/**
- * Analytics Manager (ready for GA4)
- * @class AnalyticsManager
- */
-class AnalyticsManager {
-    constructor() {
-        appEvents.on('analytics:event', this.trackEvent.bind(this));
-    }
-
-    trackEvent({ name, params }) {
-        // Prepare for window.gtag or dataLayer push
-        if (window.dataLayer) {
-            window.dataLayer.push({ event: name, ...params });
-        } else {
-            console.debug(`[Analytics] ${name}`, params);
-        }
-    }
-}
-
-/**
- * Handles Dark/Light mode with system preference detection and SettingsManager.
- * @class ThemeManager
- */
-class ThemeManager {
-    constructor(storageManager) {
-        this.storage = storageManager;
-        this.themeKey = 'pdf_expert_theme';
-        this.init();
-    }
-
-    async init() {
-        const savedTheme = localStorage.getItem(this.themeKey);
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        this.setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem(this.themeKey)) this.setTheme(e.matches ? 'dark' : 'light');
-        });
-    }
-
-    setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem(this.themeKey, theme);
-        if (window.app?.state) window.app.state.set('theme', theme);
-        appEvents.emit('themeChanged', theme);
-    }
-
-    toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        this.setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    }
-}
-
-/**
- * Handles Network connectivity, Auto-Updates, and PWA Service Worker.
- * @class NetworkManager
- */
-class NetworkManager {
-    constructor() {
-        this.initOfflineDetection();
-        this.registerServiceWorker();
-        this.initPWA();
-    }
-
-    initOfflineDetection() {
-        window.addEventListener('online', () => {
-            document.body.classList.remove('is-offline');
-            if (window.app?.state) window.app.state.set('isOnline', true);
-            appEvents.emit('notification', { type: 'success', message: 'Connection restored.' });
-        });
-
-        window.addEventListener('offline', () => {
-            document.body.classList.add('is-offline');
-            if (window.app?.state) window.app.state.set('isOnline', false);
-            appEvents.emit('notification', { type: 'error', message: 'Offline mode active.' });
-        });
-    }
-
-    async registerServiceWorker() {
-        if ('serviceWorker' in navigator) {
-            try {
-                const reg = await navigator.serviceWorker.register('/sw.js');
-                reg.addEventListener('updatefound', () => {
-                    const newWorker = reg.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            appEvents.emit('notification', { type: 'info', message: 'New update available! Refresh to apply.' });
-                        }
-                    });
-                });
-            } catch (err) {
-                console.warn('ServiceWorker registration skipped or failed.', err);
-            }
-        }
-    }
-
-    initPWA() {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            window.deferredPrompt = e;
-            appEvents.emit('pwa:installReady');
-        });
-    }
-}
-
-/**
- * Performance Monitoring System
- * @class PerformanceMonitor
- */
-class PerformanceMonitor {
-    constructor() {
-        this.metrics = {};
-        this.init();
-    }
-
-    init() {
-        if (!window.performance || !window.PerformanceObserver) return;
-        try {
-            const po = new PerformanceObserver((list) => {
-                for (const entry of list.getEntries()) {
-                    this.metrics[entry.name] = entry.startTime || entry.value;
-                    if (entry.name === 'LCP') {
-                        appEvents.emit('analytics:event', { name: 'web_vitals', params: { lcp: entry.value } });
-                    }
-                }
-            });
-            po.observe({ type: 'paint', buffered: true });
-            po.observe({ type: 'largest-contentful-paint', buffered: true });
-            po.observe({ type: 'layout-shift', buffered: true });
-        } catch (e) {
-            console.warn('PerformanceObserver fallback used');
-        }
-    }
-}
-
-// ============================================================================
-// 5. UI COMPONENTS (Notifications, Navigation, Animation, Modals, DragDrop)
-// ============================================================================
-
-/**
- * Toast Notification System
- * @class NotificationSystem
- */
-class NotificationSystem {
-    constructor() {
-        this.container = this.createContainer();
-        appEvents.on('notification', this.show.bind(this));
-    }
-
-    createContainer() {
-        let div = Utils.$('#toast-container');
-        if (!div) {
-            div = document.createElement('div');
-            div.id = 'toast-container';
-            div.className = 'fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none';
-            div.setAttribute('aria-live', 'polite');
-            document.body.appendChild(div);
-        }
-        return div;
-    }
-
-    show({ type = 'info', message, duration = 3000 }) {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type} p-4 rounded shadow-lg transform transition-all translate-y-full opacity-0 pointer-events-auto`;
-        toast.innerHTML = Utils.sanitizer.createHTML(message);
-
-        this.container.appendChild(toast);
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                toast.classList.remove('translate-y-full', 'opacity-0');
-            });
-        });
-
-        setTimeout(() => {
-            toast.classList.add('translate-y-full', 'opacity-0');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, duration);
-    }
-}
-
-/**
- * Modal & Overlay Manager (Accessible)
- * @class ModalManager
- */
-class ModalManager {
-    constructor() {
-        this.activeModal = null;
-        this.init();
-    }
-
-    init() {
-        appEvents.on('modal:open', (modalId) => this.open(modalId));
-        appEvents.on('closeModals', () => this.closeAll());
-    }
-
-    open(modalId) {
-        const modal = Utils.$(`#${modalId}`);
-        if (!modal) return;
-        this.activeModal = modal;
-        modal.classList.add('is-active');
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('modal-open');
-        Utils.$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', modal)?.focus();
-    }
-
-    closeAll() {
-        if (!this.activeModal) return;
-        this.activeModal.classList.remove('is-active');
-        this.activeModal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('modal-open');
-        this.activeModal = null;
-    }
-}
-
-/**
- * Advanced Drag & Drop Engine / File Queue Manager
- * @class FileQueueManager
- */
-class FileQueueManager {
-    constructor() {
-        this.queue = new Map();
-        this.dropzones = Utils.$$('.pdf-dropzone');
-        this.init();
-    }
-
-    init() {
-        if (!this.dropzones.length) return;
-        
-        this.dropzones.forEach(zone => {
-            zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
-            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-            zone.addEventListener('drop', (e) => {
+            // Action dispatcher inside tool execution
+            card.querySelector('.btn').addEventListener('click', (e) => {
                 e.preventDefault();
-                zone.classList.remove('drag-over');
-                if (e.dataTransfer.files.length) this.processFiles(e.dataTransfer.files, zone.dataset.tool);
+                this.launchTool(tool.id);
             });
-        });
-    }
 
-    processFiles(files, toolId) {
-        Array.from(files).forEach(file => {
-            const id = Utils.generateId();
-            this.queue.set(id, { file, toolId, status: 'pending' });
-            appEvents.emit('file:added', { id, name: file.name });
-        });
-    }
-}
-
-/**
- * Advanced Navigation System
- * @class Navigation
- */
-class Navigation {
-    constructor() {
-        this.header = Utils.$('header.main-header');
-        this.init();
-    }
-
-    init() {
-        if (!this.header) return;
-
-        window.addEventListener('scroll', Utils.throttleRAF(this.handleScroll.bind(this)), { passive: true });
-        
-        const menuToggle = Utils.$('.mobile-menu-toggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => this.toggleMobileMenu());
-        }
-
-        this.setupActiveHighlighting(Utils.$$('.nav-link'));
-    }
-
-    handleScroll() {
-        const currentScroll = window.scrollY;
-        this.header.classList.toggle('is-sticky', currentScroll > 50);
-    }
-
-    toggleMobileMenu() {
-        document.body.classList.toggle('menu-open');
-        this.header.classList.toggle('mobile-active');
-        appEvents.emit('mobileMenuToggled', document.body.classList.contains('menu-open'));
-    }
-
-    setupActiveHighlighting(links) {
-        if (!links.length) return;
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    links.forEach(link => {
-                        link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
-                    });
-                }
-            });
-        }, { rootMargin: '-50% 0px -50% 0px' });
-
-        Utils.$$('section[id]').forEach(section => observer.observe(section));
-    }
-}
-
-/**
- * Animation Management with 60FPS Optimization
- * @class AnimationManager
- */
-class AnimationManager {
-    constructor() {
-        this.initScrollReveal();
-        this.initCounters();
-    }
-
-    initScrollReveal() {
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    requestAnimationFrame(() => entry.target.classList.add('is-revealed'));
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        Utils.$$('.reveal-on-scroll').forEach(el => observer.observe(el));
-    }
-
-    initCounters() {
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.animateCounter(entry.target);
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        Utils.$$('.animate-counter').forEach(el => observer.observe(el));
-    }
-
-    animateCounter(el) {
-        const target = +el.getAttribute('data-target');
-        const duration = 2000;
-        let startTimestamp = null;
-
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            el.textContent = Math.ceil(progress * target);
-            if (progress < 1) {
-                requestAnimationFrame(step);
-            } else {
-                el.textContent = target;
-            }
-        };
-        requestAnimationFrame(step);
-    }
-}
-
-// ============================================================================
-// 6. TOOL MANAGEMENT (Virtual Rendering & Lazy Loading)
-// ============================================================================
-
-/**
- * Enterprise Tool Manager supporting 500+ Tools via Virtual Rendering
- * @class ToolManager
- */
-class ToolManager {
-    constructor(registry) {
-        this.registry = registry;
-        this.searchInput = Utils.$('#tool-search');
-        this.filterBtns = Utils.$$('.tool-filter-btn');
-        this.toolsGrid = Utils.$('#tools-grid');
-        this.tools = Array.from(Utils.$$('.pdf-tool-card') || []);
-        
-        this.init();
-    }
-
-    init() {
-        if (!this.searchInput || !this.toolsGrid) return;
-
-        // Populate Registry
-        this.tools.forEach(tool => {
-            this.registry.register(tool.id, {
-                element: tool,
-                title: tool.getAttribute('data-title')?.toLowerCase() || '',
-                category: tool.getAttribute('data-category') || 'all',
-                bg: tool.getAttribute('data-bg')
-            });
-        });
-
-        // Event Delegation for Filters
-        const filterContainer = Utils.$('.tool-filters');
-        if (filterContainer) {
-            filterContainer.addEventListener('click', (e) => {
-                const btn = e.target.closest('.tool-filter-btn');
-                if (btn) {
-                    this.filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    const category = btn.getAttribute('data-category');
-                    window.app.state.set('activeCategory', category);
-                    this.filterTools(window.app.state.get('searchQuery'), category);
-                }
-            });
-        }
-
-        // Global State Subscriptions
-        appEvents.on('state:searchQuery', (query) => this.filterTools(query, window.app.state.get('activeCategory')));
-        
-        this.searchInput.addEventListener('input', Utils.debounce(e => {
-            window.app.state.set('searchQuery', e.target.value.toLowerCase());
-            appEvents.emit('analytics:event', { name: 'search', params: { term: e.target.value } });
-        }, 300));
-
-        this.initVirtualRendering();
-    }
-
-    filterTools(searchTerm, category) {
-        requestAnimationFrame(() => {
-            this.tools.forEach(tool => {
-                const data = this.registry.getTool(tool.id);
-                if (!data) return;
-                
-                const matchesSearch = data.title.includes(searchTerm);
-                const matchesCategory = category === 'all' || data.category === category;
-
-                if (matchesSearch && matchesCategory) {
-                    tool.style.display = '';
-                    tool.classList.add('fade-in');
-                } else {
-                    tool.style.display = 'none';
-                    tool.classList.remove('fade-in');
-                }
-            });
+            this.toolsGrid.appendChild(card);
         });
     }
 
     /**
-     * Virtual Rendering: Recycles DOM nodes heavily for 500+ items.
-     * Implemented via content-visibility/IntersectionObserver.
+     * High performance search handling across 100 tools
      */
-    initVirtualRendering() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const tool = entry.target;
-                if (entry.isIntersecting) {
-                    tool.classList.remove('skeleton-loading');
-                    const data = this.registry.getTool(tool.id);
-                    if (data && data.bg && !tool.style.backgroundImage) {
-                        tool.style.backgroundImage = `url(${data.bg})`;
-                    }
-                    tool.style.contentVisibility = 'visible';
-                } else {
-                    // Memory optimization for far off-screen elements
-                    tool.style.contentVisibility = 'auto';
-                }
-            });
-        }, { rootMargin: '200px' });
-
-        this.tools.forEach(tool => observer.observe(tool));
-    }
-}
-
-// ============================================================================
-// 7. ACCESSIBILITY (WCAG 2.2)
-// ============================================================================
-
-/**
- * Enterprise Accessibility & Keyboard Navigation Manager
- * @class AccessibilityManager
- */
-class AccessibilityManager {
-    constructor() {
-        this.initKeyboardShortcuts();
-        this.initFocusManagement();
+    handleSearch(query) {
+        const cleanQuery = query.toLowerCase().trim();
+        const filtered = PDFExpertTools.filter(tool => 
+            tool.name.toLowerCase().includes(cleanQuery) || 
+            tool.desc.toLowerCase().includes(cleanQuery)
+        );
+        this.renderTools(filtered);
     }
 
-    initKeyboardShortcuts() {
-        window.addEventListener('keydown', (e) => {
-            // CMD/CTRL + K for Search
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                const search = Utils.$('#tool-search');
-                if (search) {
-                    search.focus();
-                    appEvents.emit('notification', { type: 'info', message: 'Search activated' });
-                }
-            }
-
-            // ESC handling globally
-            if (e.key === 'Escape') {
-                appEvents.emit('closeModals');
-                if (document.body.classList.contains('menu-open')) {
-                    Utils.$('.mobile-menu-toggle')?.click();
-                }
-            }
-        });
-    }
-
-    initFocusManagement() {
-        // Outline suppression for mouse users, strict focus for keyboard
-        document.body.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
-        document.body.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') document.body.classList.remove('using-mouse');
-        });
-    }
-}
-
-// ============================================================================
-// 8. APP INITIALIZATION & LIFECYCLE
-// ============================================================================
-
-/**
- * Enterprise Main Application Controller
- * @class App
- */
-class App {
-    constructor() {
-        ErrorLogger.boundary(() => {
-            this.state = new StateManager();
-            this.errorLogger = new ErrorLogger();
-            this.registry = new ToolRegistry();
-            this.plugins = new PluginManager(this);
-            
-            this.initializeManagers();
-            this.handleSmoothScrolling();
-            this.initBackToTop();
-            this.removeLoadingScreen();
-            
-            console.info('🚀 PDF Expert Enterprise Architecture v2.0 Initialized.');
-            appEvents.emit('analytics:event', { name: 'app_initialized', params: { version: '2.0' } });
-        })();
-    }
-
-    initializeManagers() {
-        this.storageManager = new StorageManager();
-        this.resourceLoader = new ResourceLoader();
-        this.themeManager = new ThemeManager(this.storageManager);
-        this.networkManager = new NetworkManager();
-        this.performanceMonitor = new PerformanceMonitor();
-        this.analyticsManager = new AnalyticsManager();
-        this.i18nManager = new I18nManager();
-        this.notificationSystem = new NotificationSystem();
-        this.modalManager = new ModalManager();
-        this.fileQueueManager = new FileQueueManager();
-        this.navigation = new Navigation();
-        this.animationManager = new AnimationManager();
-        this.toolManager = new ToolManager(this.registry);
-        this.a11yManager = new AccessibilityManager();
-    }
-
-    removeLoadingScreen() {
-        const loader = Utils.$('#page-loader');
-        if (loader) {
-            requestAnimationFrame(() => {
-                loader.classList.add('fade-out');
-                setTimeout(() => loader.remove(), 500); 
-            });
+    /**
+     * Filter array structures down to explicit categorical groups
+     */
+    filterByCategory(category) {
+        if (!category || category === 'all') {
+            this.renderTools(PDFExpertTools);
+            return;
         }
+        const filtered = PDFExpertTools.filter(tool => tool.category === category);
+        this.renderTools(filtered);
     }
 
-    handleSmoothScrolling() {
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[href^="#"]');
-            if (!link) return;
+    // ==========================================
+    // 4. ACTION CONTROLLERS & CORE UTILITIES
+    // ==========================================
 
-            const targetId = link.getAttribute('href');
-            if (targetId === '#') return;
-
-            const targetElement = Utils.$(targetId);
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
+    /**
+     * Launch target document tool logic dynamically
+     */
+    launchTool(toolId) {
+        this.currentActiveTool = toolId;
+        console.log(`Core Engine Action: Launching ${toolId}`);
+        // Here you can inject modal popup triggers or page transitions without hardcoding styling scripts
     }
 
-    initBackToTop() {
-        const btn = Utils.$('#back-to-top');
-        if (!btn) return;
+    // ==========================================
+    // 5. PRODUCTION-READY CORE REUSABLE OFFLINE ENGINES
+    // ==========================================
 
-        window.addEventListener('scroll', Utils.throttleRAF(() => {
-            btn.classList.toggle('visible', window.scrollY > 500);
-        }), { passive: true });
+    /**
+     * 100% Client-Side PDF Merge Engine via PDF-Lib
+     * Processes array of ArrayBuffers locally
+     */
+    async executeMergePDF(arrayBuffersList) {
+        if (!this.pdfLibInstance) throw new Error("PDF-Lib core engine is not loaded yet.");
+        
+        const mergedPdf = await this.pdfLibInstance.PDFDocument.create();
+        
+        for (const buffer of arrayBuffersList) {
+            const srcDoc = await this.pdfLibInstance.PDFDocument.load(buffer);
+            const copiedPages = await mergedPdf.copyPages(srcDoc, srcDoc.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+        
+        const mergedPdfBytes = await mergedPdf.save();
+        return this.triggerLocalDownload(mergedPdfBytes, "merged-document.pdf", "application/pdf");
+    }
 
-        btn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    /**
+     * 100% Client-Side Page Extractor / Delete Engine
+     */
+    async executeExtractPages(sourceBuffer, pagesArrayToKeep) {
+        if (!this.pdfLibInstance) throw new Error("PDF-Lib core engine is not loaded yet.");
+        
+        const srcDoc = await this.pdfLibInstance.PDFDocument.load(sourceBuffer);
+        const extractedPdf = await this.pdfLibInstance.PDFDocument.create();
+        
+        // pagesArrayToKeep expects 0-indexed values e.g., [0, 2, 5]
+        const copiedPages = await extractedPdf.copyPages(srcDoc, pagesArrayToKeep);
+        copiedPages.forEach((page) => extractedPdf.addPage(page));
+        
+        const extractedPdfBytes = await extractedPdf.save();
+        return this.triggerLocalDownload(extractedPdfBytes, "extracted-document.pdf", "application/pdf");
+    }
+
+    /**
+     * Secure Direct Download Trigger (Zero Upload Server Reliance)
+     */
+    triggerLocalDownload(uint8ArrayData, filename, mimeType) {
+        const blob = new Blob([uint8ArrayData], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const downloadAnchor = document.createElement('a');
+        
+        downloadAnchor.href = url;
+        downloadAnchor.download = filename;
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        
+        // Clean memory streams safely
+        document.body.removeChild(downloadAnchor);
+        URL.revokeObjectURL(url);
+        return true;
     }
 }
 
-// Bootstrap Application on DOM Content Loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { window.app = new App(); });
-} else {
-    window.app = new App();
-}
+// Instantiate the architecture when the DOM context fully mounts
+window.PDFExpertCore = new PDFExpertEngine();
