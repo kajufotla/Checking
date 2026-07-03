@@ -1,161 +1,812 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDFExpert Studio - Premium Local PDF Productivity Suite</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome Icons -->
+    <title>PDFExprt Suite - Premium Client-Side Web Utilities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- سلیقے اور کارکردگی کے لیے مائنر گلوبل اسٹائلز -->
     <style>
-        .gpu-accelerate {
-            transform: translateZ(0);
-            backface-visibility: hidden;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(99, 102, 241, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+<body class="text-slate-200 antialiased selection:bg-indigo-500 selection:text-white">
 
-    <!-- 1. ٹاپ نیویگیشن بار (Premium Navbar) -->
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <!-- برانڈ لوگو جو کلک کرنے پر ہوم پیج پر لے جائے گا (Pure HTML Link) -->
-            <a href="index.html" class="flex items-center gap-3 cursor-pointer decoration-transparent">
-                <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
-                    <i class="fa-solid fa-file-pdf"></i>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute top-20 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-layer-group text-white text-lg"></i>
                 </div>
-                <span class="font-bold text-lg text-slate-900 tracking-tight">PDF<span class="text-indigo-600">Expert</span></span>
-            </a>
+                <span class="text-xl font-bold tracking-tight text-white">PDF<span class="gradient-text">Exprt</span></span>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#" class="text-indigo-400 hover:text-white transition-colors">Home</a>
+                <a href="#tools" class="hover:text-white transition-colors">All Tools</a>
+                <a href="#" class="hover:text-white transition-colors">About Us</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Install PWA
+                </button>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- 2. مین ہیرو سیکشن اور ٹول ڈیش بورڈ -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        
-        <!-- ہیرو ٹیکسٹ انٹروڈکشن -->
-        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-none">
-                Every PDF Tool You Need, <span class="text-indigo-600">Completely Offline</span>
+    <section class="relative pt-16 pb-12 overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-slate-800 mb-6 text-xs font-medium tracking-wide uppercase text-indigo-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 100% Secure & Client-Side Processing
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                The Ultimate <span class="gradient-text">Privacy-First</span> Web Tool Suite
             </h1>
-            <p class="text-base text-slate-500 font-medium max-w-xl mx-auto leading-relaxed">
-                No server uploads, no data leaks. Fast, client-side PDF manipulation running securely inside your local web browser.
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10">
+                No Backend Servers. No APIs. All operations are processed completely in your browser via local Web APIs and Canvas. Your files never leave your device.
             </p>
+
+            <div class="max-w-2xl mx-auto mb-12">
+                <div class="relative glass-panel rounded-2xl border border-slate-800 p-2 flex items-center shadow-2xl">
+                    <i class="fa-solid fa-magnifying-glass text-slate-500 ml-4 mr-2"></i>
+                    <input type="text" id="toolSearch" placeholder="Search across 50 dynamic tools (e.g., Image to PDF, Code Minifier)..." 
+                           class="w-full bg-transparent border-0 outline-none text-white placeholder-slate-500 text-base py-3 px-2">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3" id="categoryFilters">
+                <button data-category="all" class="px-5 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 transition-all">All 50 Tools</button>
+                <button data-category="pdf" class="px-5 py-2 rounded-xl text-sm font-medium glass-card hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-all">PDF Utilities (16)</button>
+                <button data-category="image" class="px-5 py-2 rounded-xl text-sm font-medium glass-card hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-all">Image Modifiers (17)</button>
+                <button data-category="developer" class="px-5 py-2 rounded-xl text-sm font-medium glass-card hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-all">Dev & Text Tools (17)</button>
+            </div>
         </div>
+    </section>
 
-        <!-- 11 ٹولز کا گرڈ نیٹ ورک (Grid Network) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-            <!-- [ٹول 1]: PDF COMPRESSOR -->
-            <a href="pdf-compress.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-compress"></i>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="tools">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="toolsGrid">
+            
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image to PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Convert PNG, JPG, or WebP images into a compiled PDF document completely local via Canvas.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-indigo-600 transition-colors">Compress PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Reduce the size of your PDF documents locally without affecting essential quality.</p>
-            </a>
+                <a href="./tools/image-to-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 2]: MERGE PDF -->
-            <a href="pdf-merge.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-object-group"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-export"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">PDF to JPEG</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Extract and render all pages of a PDF into high-quality standalone JPEG images using PDF.js.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-emerald-600 transition-colors">Merge PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Combine multiple PDF files into a single, perfectly ordered document easily.</p>
-            </a>
+                <a href="./tools/pdf-to-jpeg/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 3]: SPLIT PDF -->
-            <a href="pdf-split.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-scissors"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-object-group"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Merge PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Combine multiple PDF documents together in any custom sequence completely inside your browser buffer.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-amber-600 transition-colors">Split PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Extract specific ranges or separate individual pages into independent files.</p>
-            </a>
+                <a href="./tools/merge-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 4]: PDF TO WORD -->
-            <a href="pdf-to-word.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-regular fa-file-word"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-scissors"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Split PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Extract targeted pages or ranges from a heavy PDF document and download them as a fresh PDF file.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-blue-600 transition-colors">PDF to Word</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Convert structural PDF texts directly into editable DOCX files format.</p>
-            </a>
+                <a href="./tools/split-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 5]: WORD TO PDF -->
-            <a href="word-to-pdf.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-file-word"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Delete PDF Pages</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Visually choose and remove redundant pages from any uploaded PDF instantly via browser script.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-sky-600 transition-colors">Word to PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Make your Word files universally readable by converting them to clean PDFs.</p>
-            </a>
+                <a href="./tools/delete-pdf-pages/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 6]: PDF TO JPG -->
-            <a href="pdf-to-jpg.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-regular fa-image"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-rotate"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Rotate PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Rotate misaligned pages (90/180/270 degrees) within your PDF document and export seamlessly.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-rose-600 transition-colors">PDF to JPG</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Extract all embedded high-resolution graphics and turn pages into JPEG images.</p>
-            </a>
+                <a href="./tools/rotate-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 7]: JPG TO PDF -->
-            <a href="jpg-to-pdf.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-image"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-sort"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Reorder PDF Pages</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Drag, drop, and rearrange the structure of any PDF manual before triggering a client download.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-teal-600 transition-colors">JPG to PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Compile structural visual images or photos into a well-packaged PDF bundle.</p>
-            </a>
+                <a href="./tools/reorder-pdf-pages/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 8]: ROTATE PDF -->
-            <a href="pdf-rotate.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-rotate"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-word"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">HTML to PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Convert rich text configurations, code templates, or web pages into valid custom-formatted PDFs.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-orange-600 transition-colors">Rotate PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Correct wrong orientation angles by turning your pages landscape or portrait.</p>
-            </a>
+                <a href="./tools/html-to-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 9]: UNLOCK PDF -->
-            <a href="pdf-unlock.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-unlock-keyhole"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-font"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Extract PDF Text</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Parse the internal data stream of an open PDF and instantly extract raw text fields onto your screen.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-red-600 transition-colors">Unlock PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Remove passwords restrictions from documents to grant immediate full access.</p>
-            </a>
+                <a href="./tools/extract-pdf-text/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 10]: PROTECT PDF -->
-            <a href="pdf-protect.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-lock"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Extract PDF Images</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Locate and export all embedded raster images from inside a PDF container structure effortlessly.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-cyan-600 transition-colors">Protect PDF</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Secure private information files by configuring advanced strong encryptions.</p>
-            </a>
+                <a href="./tools/extract-pdf-images/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
-            <!-- [ٹول 11]: ADD PAGE NUMBERS -->
-            <a href="pdf-number.html" class="block bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-sm hover:shadow-md transition duration-200 group">
-                <div class="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-sm">
-                    <i class="fa-solid fa-list-ol"></i>
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-hashtag"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Add PDF Page Numbers</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Inject custom index or page numbers into headers/footers of structural PDFs dynamically via script.</p>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mt-4 group-hover:text-violet-600 transition-colors">Add Page Numbers</h3>
-                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Incorporate continuous organized counts or indices across all header positions.</p>
-            </a>
+                <a href="./tools/add-pdf-page-numbers/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-stamp"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Add PDF Watermark</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Overlay custom textual watermarks or brand indicators securely over existing PDF layouts locally.</p>
+                </div>
+                <a href="./tools/add-pdf-watermark/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-signature"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Sign PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Draw a manual digital signature track or load an image token to seal onto specific coordinates of a PDF.</p>
+                </div>
+                <a href="./tools/sign-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">PDF Invoice Generator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Populate responsive invoice tables directly into your UI layout and compile into printable PDF streams.</p>
+                </div>
+                <a href="./tools/pdf-invoice-generator/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-crop shadow-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Crop PDF</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Adjust margin fields and crop outer dimensions of PDF documentation using custom sizing vectors.</p>
+                </div>
+                <a href="./tools/crop-pdf/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="pdf">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 text-xl">
+                        <i class="fa-solid fa-unlock"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">PDF Password Remover</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Provide the known matching decryption key to strip user protections and rewrite an unlocked duplicate.</p>
+                </div>
+                <a href="./tools/pdf-password-remover/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-image"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">WEBP to PNG Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Decode modern .webp image buffers into standard lossless .png format directly inside Canvas layouts.</p>
+                </div>
+                <a href="./tools/webp-to-png/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-minimize"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Resizer</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Scale specific pixel widths or height parameters smoothly with targeted bilinear interpolation scripts.</p>
+                </div>
+                <a href="./tools/image-resizer/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-compress"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">JPEG Compressor</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Reduce overall file size weight by safely re-tuning the canvas-encoder quality ratio variables directly.</p>
+                </div>
+                <a href="./tools/jpeg-compressor/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">SVG to PNG</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Render scalable vector graphic vectors accurately down into standard rasterized pixel assets safely.</p>
+                </div>
+                <a href="./tools/svg-to-png/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-eye-dropper"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Color Picker</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Extract deep HEX, RGB, or HSL canvas matrix colors dynamically with localized eyedropper hooks.</p>
+                </div>
+                <a href="./tools/color-picker/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-scissors shadow-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Cropper</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Isolate specific spatial bounding rectangular limits using advanced HTML5 bounding coordinate calculations.</p>
+                </div>
+                <a href="./tools/image-cropper/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Rotator & Flipper</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Perform smooth image mirroring, vertical flips, or degree turns leveraging clean context transformations.</p>
+                </div>
+                <a href="./tools/image-rotator/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Circle Profile Cropper</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Mask standard uploaded square portrait structures cleanly inside clean radial arc vectors seamlessly.</p>
+                </div>
+                <a href="./tools/circle-cropper/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Palette Extractor</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Sample local pixel buffers to isolate clustering dominant theme tones across custom matrix configurations.</p>
+                </div>
+                <a href="./tools/palette-extractor/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Filter Studio</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Apply real-time adjustments for grayscale, brightness, contrast, and sepia via lightning-fast local canvas modifications.</p>
+                </div>
+                <a href="./tools/image-filters/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-blur"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Blur Image Tool</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Apply customized Gaussian blur filters over entire structures or specific parts safely.</p>
+                </div>
+                <a href="./tools/blur-image/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Base64 to Image</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Decode raw data URI cryptographic string sequences back into clean visual graphic assets instantly.</p>
+                </div>
+                <a href="./tools/base64-to-image/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image to Base64</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Encode any uploaded asset directly into fully functional data strings optimized for inline HTML embedding.</p>
+                </div>
+                <a href="./tools/image-to-base64/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-grip"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CSS Sprite Sheet Generator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Stitch groups of icon configurations into a compiled mega grid file and produce matching CSS coordinate mapping values.</p>
+                </div>
+                <a href="./tools/sprite-generator/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image EXIF Metadata Stripper</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Parse raw binary headers of uploaded images to strip hidden geo-location tags and hardware signatures cleanly.</p>
+                </div>
+                <a href="./tools/exif-stripper/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">BMP to PNG Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Map continuous bitmap headers into compressed canvas-driven alpha layer target configurations instantly.</p>
+                </div>
+                <a href="./tools/bmp-to-png/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="image">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-xl">
+                        <i class="fa-solid fa-border-top-left"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Image Border & Shadow Adder</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Inject customizable padding borders, outer glow vectors, or dropshadow configurations via structural scripts.</p>
+                </div>
+                <a href="./tools/image-styler/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-code-minify">{}</i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">JavaScript Minifier</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Strip whitespace, structure comments, and minify code scripts cleanly utilizing RegExp parsers locally.</p>
+                </div>
+                <a href="./tools/js-minifier/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-braces"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">JSON Validator & Formatter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Parse dirty JSON data strings into beautiful syntax-highlighted structural views with deep nested testing.</p>
+                </div>
+                <a href="./tools/json-formatter/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-code"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">HTML Entity Encoder/Decoder</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Sanitize unsafe raw characters into secure matching web entity expressions to block layout injection flaws.</p>
+                </div>
+                <a href="./tools/html-entities/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">URL Encoder/Decoder</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Sanitize complex query parameter elements using secure browser-native encodeURIComponent methods safely.</p>
+                </div>
+                <a href="./tools/url-encoder-decoder/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-font-case">Aa</i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Text Case Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Convert large strings into UPPERCASE, lowercase, sentence case, or title case formats dynamically.</p>
+                </div>
+                <a href="./tools/case-converter/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Word & Character Counter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Calculate exact word frequencies, string metrics, sentence lengths, and reading times live as you type.</p>
+                </div>
+                <a href="./tools/word-counter/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-filter"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Duplicate Line Remover</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Clean up messy lists or logs by parsing data arrays and stripping matching duplicate records via JS Set arrays.</p>
+                </div>
+                <a href="./tools/duplicate-remover/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Text List Sorter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Arrange raw listing parameters alphabetically, numerically, or in reverse sequences cleanly.</p>
+                </div>
+                <a href="./tools/list-sorter/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Strong Password Generator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Compile cryptographically random string tokens leveraging local window.crypto tracking methods safely.</p>
+                </div>
+                <a href="./tools/password-generator/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-signature"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Markdown to HTML</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Convert structured .md files or writing blocks directly into standard browser-viewable markup layout wrappers.</p>
+                </div>
+                <a href="./tools/markdown-to-html/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CSV to JSON Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Parse comma-separated data grids straight into structural nested JavaScript objects seamlessly.</p>
+                </div>
+                <a href="./tools/csv-to-json/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">JSON to CSV Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Flatten layered data parameters back down into traditional clean tabular rows optimized for Excel tools.</p>
+                </div>
+                <a href="./tools/json-to-csv/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Lorem Ipsum Generator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Create mock placeholder paragraphs, sentences, or word flows instantly based on custom length requests.</p>
+                </div>
+                <a href="./tools/lorem-ipsum/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Unix Timestamp Converter</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Parse relative epoch timestamp integer fields instantly into human-readable global ISO time structures.</p>
+                </div>
+                <a href="./tools/unix-timestamp/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">UUID v4 Generator</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Compute compliant globally unique 128-bit identifier keys locally utilizing specific crypto-random strings.</p>
+                </div>
+                <a href="./tools/uuid-generator/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Regex Tester</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Input customized regular expression streams and test pattern matches directly against local string blocks.</p>
+                </div>
+                <a href="./tools/regex-tester/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between" data-cat="developer">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-xl">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Diff Checker (Text Compare)</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Line-by-line contrast engine to compare two structural text templates and highlight variations locally.</p>
+                </div>
+                <a href="./tools/diff-checker/" class="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-400 group hover:text-indigo-300">
+                    <span>Launch Tool</span> <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
         </div>
     </main>
 
-    <!-- 3. فائنل پروڈکشن فوٹر -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 font-semibold tracking-wide">
-            &copy; 2026 PDFExpert Studio. All utilities run strictly inside client memory buffers.
+    <footer class="glass-panel border-t border-slate-800 mt-20 py-12 text-center text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <p>&copy; 2026 PDFExprt Suite. All file operations executed 100% inside client environment.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-slate-300 transition-colors">Terms</a>
+                <a href="#" class="hover:text-slate-300 transition-colors">Sitemap</a>
+                <a href="#" class="hover:text-slate-300 transition-colors">Contact</a>
+            </div>
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('toolSearch');
+            const filterButtons = document.querySelectorAll('#categoryFilters button');
+            const toolCards = document.querySelectorAll('#toolsGrid > div');
+
+            // Search input handler
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase().trim();
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const desc = card.querySelector('p').textContent.toLowerCase();
+                    if (title.includes(term) || desc.includes(term)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Fast Category Tab filtering
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active styling
+                    filterButtons.forEach(b => {
+                        b.className = "px-5 py-2 rounded-xl text-sm font-medium glass-card hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-all";
+                    });
+                    
+                    if (btn.dataset.category === 'all') {
+                        btn.className = "px-5 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 transition-all";
+                    } else {
+                        btn.className = "px-5 py-2 rounded-xl text-sm font-medium bg-indigo-600 text-white shadow-md transition-all";
+                    }
+
+                    const category = btn.dataset.category;
+                    toolCards.forEach(card => {
+                        if (category === 'all' || card.dataset.cat === category) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
