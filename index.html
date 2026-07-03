@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
-    <!-- Advanced Security & Policies -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.pdfexprt.xyz; script-src 'self' 'defer'; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     
-    <!-- Theme & Color Schemes -->
     <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark">
 
-    <!-- Premium SEO Meta Tags -->
     <title>E-X-P-R-T | Powerful Offline Tools for PDF, Image, Video & More</title>
     <meta name="description" content="100% Offline • No Upload • No Server • Privacy First. E-X-P-R-T offers 50+ premium tools for PDF, Image, Video, and Text directly in your browser securely.">
     <meta name="keywords" content="offline tools, PDF editor, image converter, video compressor, offline SaaS, privacy first, browser tools, local format converter">
@@ -21,7 +18,6 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://www.pdfexprt.xyz/">
 
-    <!-- Open Graph (Facebook/LinkedIn) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.pdfexprt.xyz/">
     <meta property="og:title" content="E-X-P-R-T | 100% Offline SaaS Tools">
@@ -33,7 +29,6 @@
     <meta property="og:site_name" content="E-X-P-R-T">
     <meta property="og:locale" content="en_US">
 
-    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.pdfexprt.xyz/">
     <meta name="twitter:title" content="E-X-P-R-T | 100% Offline Tools">
@@ -41,30 +36,25 @@
     <meta name="twitter:image" content="https://www.pdfexprt.xyz/assets/twitter-image.jpg">
     <meta name="twitter:creator" content="@pdfexprt">
 
-    <!-- PWA & Favicons -->
     <link rel="icon" type="image/svg+xml" href="https://www.pdfexprt.xyz/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="https://www.pdfexprt.xyz/assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://www.pdfexprt.xyz/assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://www.pdfexprt.xyz/assets/apple-touch-icon.png">
     <link rel="manifest" href="https://www.pdfexprt.xyz/site.webmanifest" crossorigin="use-credentials">
 
-    <!-- Performance: Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
     <link rel="preload" href="style.css" as="style">
 
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="style.css">
 
-    <!-- FontAwesome: Non-blocking Lazy Load -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </noscript>
 
-    <!-- Critical In-line CSS for Premium UI/UX (Glassmorphism & Focus) -->
     <style>
         /* Smooth Background Gradients & Glass Effects */
         :root {
@@ -118,7 +108,6 @@
         }
     </style>
 
-    <!-- Comprehensive Schema.org Architecture -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -172,15 +161,15 @@
 </head>
 
 <body class="theme-light">
-    <!-- Accessibility Skip Link -->
     <a href="#main-content" class="skip-to-main focus-visible-ring sr-only focus:not-sr-only">Skip to main content</a>
 
-    <!-- Navigation -->
-    <nav id="site-navbar" class="glass-nav sticky-nav" aria-label="Main Navigation">
-        <div class="nav-container max-w-layout">
+    <header id="site-navbar" class="app-header glass-nav sticky-nav" aria-label="Main Navigation">
+        <div class="header-container max-w-layout">
             
             <div class="brand-section">
-                <a href="/" class="logo focus-visible-ring" aria-label="E-X-P-R-T Home">E-X-P-R-T</a>
+                <a href="/" class="logo focus-visible-ring" aria-label="E-X-P-R-T Home">
+                    <span>E-X-P-R-T</span>
+                </a>
                 <span class="badge offline-badge" aria-label="Privacy Status: 100% Offline, verified">
                     <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 
                     <span>100% Offline</span>
@@ -191,7 +180,7 @@
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
 
-            <ul id="nav-links" class="nav-links" role="menubar">
+            <ul id="nav-links" class="main-nav nav-links" role="menubar">
                 <li role="none"><a href="#home" class="nav-link active focus-visible-ring" role="menuitem" aria-current="page">Home</a></li>
                 <li role="none"><a href="#tools-section" class="nav-link focus-visible-ring" role="menuitem">All Tools</a></li>
                 <li role="none">
@@ -207,25 +196,27 @@
                 </li>
             </ul>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <header id="hero-section" class="hero-container expanded" aria-expanded="true">
-        <div class="hero-content max-w-layout">
+    <section id="hero-section" class="tool-interface-section expanded">
+        <div class="upload-container max-w-layout">
             
-            <h1 class="hero-title" fetchpriority="high">E-X-P-R-T</h1>
-            <p class="hero-subtitle">Powerful Offline Tools for PDF, Image, Text, Video & More</p>
-            
-            <p class="hero-text">
-                All tools work completely offline inside your browser.<br>
-                No uploads. No server. No tracking. <strong>Privacy First.</strong>
-            </p>
+            <div class="upload-content">
+                <div class="upload-icon-wrapper">
+                    <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
+                </div>
+                <h1 class="upload-title" fetchpriority="high">E-X-P-R-T</h1>
+                <p class="upload-desc">Powerful Offline Tools for PDF, Image, Text, Video & More</p>
+                <p class="hero-text" style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+                    All tools work completely offline inside your browser.<br>
+                    No uploads. No server. No tracking. <strong>Privacy First.</strong>
+                </p>
+            </div>
 
             <form id="search-form" class="search-wrapper" role="search" aria-label="Search offline tools">
                 <label for="search-input" class="sr-only">Search for a tool</label>
-                <div class="search-input-group">
-                    <i class="fa-solid fa-search search-icon" aria-hidden="true"></i>
-                    <!-- Added accesskey and descriptive placeholder for better UX -->
+                <div class="search-input-group" style="position: relative;">
+                    <i class="fa-solid fa-search search-icon" aria-hidden="true" style="position: absolute; left: 24px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary);"></i>
                     <input type="search" id="search-input" class="search-input focus-visible-ring" placeholder="Search tools (Press Ctrl+K)..." autocomplete="off" spellcheck="false" role="searchbox" aria-controls="tools-container">
                     <button type="reset" id="clear-search-icon" class="clear-search-btn focus-visible-ring hidden" aria-label="Clear search field">
                         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -233,92 +224,137 @@
                 </div>
             </form>
 
-            <button type="button" id="explore-cta-btn" class="cta-button primary-btn focus-visible-ring" aria-label="Scroll down to Explore All Offline Tools">
+            <button type="button" id="explore-cta-btn" class="btn-gradient btn-large focus-visible-ring" aria-label="Scroll down to Explore All Offline Tools" style="margin-top: 2rem;">
                 Explore All Tools <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </button>
 
-            <div class="hero-features" aria-label="Platform Core Features">
-                <div class="feature-card">
-                    <i class="fa-solid fa-wifi feature-icon" aria-hidden="true"></i>
+            <div class="features-bar" aria-label="Platform Core Features">
+                <div class="feature-badge">
+                    <i class="fa-solid fa-wifi" aria-hidden="true"></i>
                     <span>100% Offline</span>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-cloud-arrow-up feature-icon" aria-hidden="true"></i>
+                <div class="feature-badge">
+                    <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
                     <span>No Upload</span>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-user-shield feature-icon" aria-hidden="true"></i>
+                <div class="feature-badge">
+                    <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
                     <span>Privacy First</span>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-bolt feature-icon" aria-hidden="true"></i>
+                <div class="feature-badge">
+                    <i class="fa-solid fa-bolt" aria-hidden="true"></i>
                     <span>Fast Processing</span>
                 </div>
             </div>
-        </div>
-        
-        <button type="button" id="hero-collapse-btn" class="collapse-btn touch-target focus-visible-ring" aria-label="Collapse Hero Section" aria-controls="hero-section">
-            <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
-        </button>
-    </header>
 
-    <!-- Main Content -->
+        </div>
+    </section>
+
     <main id="main-content" role="main" class="main-layout max-w-layout">
         
-        <!-- Filter Categories -->
         <section id="categories-section" class="categories-section" aria-label="Filter Tools by Category">
-            <div class="categories-wrapper scroll-snapping" id="category-filters" role="tablist" aria-label="Tool Categories">
-                <button type="button" class="category-btn active focus-visible-ring" data-category="all" role="tab" aria-selected="true" aria-controls="tools-container">All</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="pdf" role="tab" aria-selected="false" aria-controls="tools-container">PDF</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="image" role="tab" aria-selected="false" aria-controls="tools-container">Image</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="converter" role="tab" aria-selected="false" aria-controls="tools-container">Converter</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="video" role="tab" aria-selected="false" aria-controls="tools-container">Video</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="audio" role="tab" aria-selected="false" aria-controls="tools-container">Audio</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="text" role="tab" aria-selected="false" aria-controls="tools-container">Text</button>
-                <button type="button" class="category-btn focus-visible-ring" data-category="utility" role="tab" aria-selected="false" aria-controls="tools-container">Utility</button>
+            <div class="category-filters scroll-snapping" id="category-filters" role="tablist" aria-label="Tool Categories">
+                <button type="button" class="filter-pill active focus-visible-ring" data-category="all" role="tab" aria-selected="true" aria-controls="tools-container">All</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="pdf" role="tab" aria-selected="false" aria-controls="tools-container">PDF</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="image" role="tab" aria-selected="false" aria-controls="tools-container">Image</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="word" role="tab" aria-selected="false" aria-controls="tools-container">Word</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="security" role="tab" aria-selected="false" aria-controls="tools-container">Security</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="edit" role="tab" aria-selected="false" aria-controls="tools-container">Edit</button>
+                <button type="button" class="filter-pill focus-visible-ring" data-category="merge" role="tab" aria-selected="false" aria-controls="tools-container">Merge</button>
                 
-                <button type="button" class="category-btn favorites-btn focus-visible-ring" data-category="favorites" role="tab" aria-selected="false" aria-controls="tools-container">
+                <button type="button" class="filter-pill favorites-btn focus-visible-ring" data-category="favorites" role="tab" aria-selected="false" aria-controls="tools-container">
                     <i class="fa-solid fa-heart" aria-hidden="true"></i> Favorites
                 </button>
             </div>
         </section>
 
-        <!-- Tools Grid -->
         <section id="tools-section" class="tools-section" aria-label="Available Tools List">
             
             <div id="tools-container" class="tools-grid" aria-live="polite" aria-atomic="false" role="region" aria-label="Tools Grid">
-                <!-- JavaScript will inject high-demand SEO-friendly tools here (e.g., <a href="/merge-pdf.html">) -->
+                
+                <a href="#merge-pdf" class="tool-card" data-category="pdf">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h3 class="tool-title">Merge PDF</h3>
+                    <span class="category-badge">PDF</span>
+                </a>
+
+                <a href="#compress-image" class="tool-card" data-category="image">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <h3 class="tool-title">Compress Image</h3>
+                    <span class="category-badge">Image</span>
+                </a>
+
+                <a href="#word-to-pdf" class="tool-card" data-category="word">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-file-word"></i>
+                    </div>
+                    <h3 class="tool-title">Word to PDF</h3>
+                    <span class="category-badge">Word</span>
+                </a>
+
+                <a href="#protect-pdf" class="tool-card" data-category="security">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3 class="tool-title">Protect PDF</h3>
+                    <span class="category-badge">Security</span>
+                </a>
+
+                <a href="#edit-pdf" class="tool-card" data-category="edit">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <h3 class="tool-title">Edit PDF</h3>
+                    <span class="category-badge">Edit</span>
+                </a>
+
+                <a href="#merge-images" class="tool-card" data-category="merge">
+                    <button class="fav-btn focus-visible-ring" aria-label="Add to favorites"><i class="fa-solid fa-heart"></i></button>
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-object-group"></i>
+                    </div>
+                    <h3 class="tool-title">Merge Images</h3>
+                    <span class="category-badge">Merge</span>
+                </a>
+
             </div>
             
-            <div id="no-results" class="no-results-state hidden" aria-hidden="true">
-                <i class="fa-solid fa-magnifying-glass-minus empty-icon" aria-hidden="true"></i>
-                <h3 class="empty-title">No tools found</h3>
-                <p class="empty-description">Try searching with different keywords or checking your spelling.</p>
-                <button type="button" id="clear-search-btn-fallback" class="secondary-btn mt-4 focus-visible-ring">Clear Search</button>
+            <div id="no-results" class="no-results-state hidden" aria-hidden="true" style="text-align: center; padding: 40px;">
+                <i class="fa-solid fa-magnifying-glass-minus empty-icon" aria-hidden="true" style="font-size: 3rem; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
+                <h3 class="empty-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;">No tools found</h3>
+                <p class="empty-description" style="color: var(--text-secondary);">Try searching with different keywords or checking your spelling.</p>
+                <button type="button" id="clear-search-btn-fallback" class="btn-secondary mt-4 focus-visible-ring">Clear Search</button>
             </div>
         </section>
         
     </main>
 
-    <!-- Footer -->
-    <footer id="site-footer" class="site-footer" role="contentinfo">
+    <footer id="site-footer" class="site-footer" role="contentinfo" style="text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-light); margin-top: 40px;">
         <div class="footer-container max-w-layout">
-            <div class="footer-brand">
-                <span class="footer-logo">E-X-P-R-T</span>
-                <p class="footer-tagline">100% Offline • Privacy First • No Uploads</p>
+            <div class="footer-brand" style="margin-bottom: 20px;">
+                <span class="footer-logo" style="font-weight: 800; font-size: 1.2rem;">E-X-P-R-T</span>
+                <p class="footer-tagline" style="color: var(--text-secondary); margin-top: 8px;">100% Offline • Privacy First • No Uploads</p>
             </div>
-            <nav class="footer-links" aria-label="Footer Navigation">
+            <nav class="footer-links" aria-label="Footer Navigation" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 20px; color: var(--text-secondary);">
                 <a href="#privacy" class="focus-visible-ring">Privacy Policy</a>
                 <a href="#terms" class="focus-visible-ring">Terms of Service</a>
                 <a href="#contact" class="focus-visible-ring">Contact</a>
             </nav>
-            <div class="footer-copyright">
+            <div class="footer-copyright" style="color: var(--text-tertiary); font-size: 0.9rem;">
                 <p>&copy; 2026 E-X-P-R-T. All offline rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Deferred Non-blocking JavaScript Execution -->
     <script src="script.js" defer></script>
 </body>
 </html>
