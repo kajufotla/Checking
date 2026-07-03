@@ -1,204 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMELL2FZ4F"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-LMELL2FZ4F'); 
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="google-site-verification" content="qlxW5HyhRrcsYx2S4vzYx8cSfH361HOy_T48NCndlwo" />
     
-    <link rel="preconnect" href="https://fonts.googleapis.com"> 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com"> 
+    <!-- Advanced Security & Policies -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https://www.pdfexprt.xyz; script-src 'self' 'defer'; connect-src 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
     
-    <title>100% Offline PDF Converter: Secure & Private Tools | PDFExprt</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <meta name="description" content="Manage documents effortlessly with our modern, client-side PDF tools. Instantly merge, split, and convert PDFs locally in your browser. Highly secure, offline, and free." /> 
-    <meta name="keywords" content="free online pdf tools, merge pdf offline, split pdf free, convert image to pdf, secure pdf editor, client-side document tools, compress pdf without losing quality" /> 
-    
-    <link rel="canonical" href="https://pdfexprt.xyz/" /> 
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" /> 
-    
-    <meta property="og:type" content="website" /> 
-    <meta property="og:site_name" content="Pdfexpert" /> 
-    <meta property="og:url" content="https://pdfexprt.xyz/" /> 
-    <meta property="og:title" content="Free Online PDF Tools: Merge, Split, and Convert Securely" /> 
-    <meta property="og:description" content="Manage documents effortlessly with a clean, high-level interface. Highly secure, browser-based PDF tools with zero file uploads required." /> 
-    <meta property="og:image" content="https://pdfexprt.xyz/assets/og-banner-1200x630.jpg" /> 
-    <meta property="og:locale" content="en_US" /> 
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
+    <!-- Theme & Color Schemes -->
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)">
+    <meta name="color-scheme" content="light dark">
 
+    <!-- Premium SEO Meta Tags -->
+    <title>E-X-P-R-T | Powerful Offline Tools for PDF, Image, Video & More</title>
+    <meta name="description" content="100% Offline • No Upload • No Server • Privacy First. E-X-P-R-T offers 50+ premium tools for PDF, Image, Video, and Text directly in your browser securely.">
+    <meta name="keywords" content="offline tools, PDF editor, image converter, video compressor, offline SaaS, privacy first, browser tools, local format converter">
+    <meta name="author" content="E-X-P-R-T">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://www.pdfexprt.xyz/">
+
+    <!-- Open Graph (Facebook/LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.pdfexprt.xyz/">
+    <meta property="og:title" content="E-X-P-R-T | 100% Offline SaaS Tools">
+    <meta property="og:description" content="Powerful offline tools for PDF, Image, Text, Video & More. No uploads, no server, complete privacy.">
+    <meta property="og:image" content="https://www.pdfexprt.xyz/assets/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="E-X-P-R-T Dashboard Preview">
+    <meta property="og:site_name" content="E-X-P-R-T">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.pdfexprt.xyz/">
+    <meta name="twitter:title" content="E-X-P-R-T | 100% Offline Tools">
+    <meta name="twitter:description" content="Powerful offline tools for PDF, Image, Text, Video & More. No uploads, no server, complete privacy.">
+    <meta name="twitter:image" content="https://www.pdfexprt.xyz/assets/twitter-image.jpg">
+    <meta name="twitter:creator" content="@pdfexprt">
+
+    <!-- PWA & Favicons -->
+    <link rel="icon" type="image/svg+xml" href="https://www.pdfexprt.xyz/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.pdfexprt.xyz/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.pdfexprt.xyz/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.pdfexprt.xyz/assets/apple-touch-icon.png">
+    <link rel="manifest" href="https://www.pdfexprt.xyz/site.webmanifest" crossorigin="use-credentials">
+
+    <!-- Performance: Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
+    <link rel="preload" href="style.css" as="style">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="style.css">
-</head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <nav class="pt-safe sticky top-0 z-40 w-full glass-panel shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-2 text-2xl font-extrabold text-blue-600 tracking-tight cursor-pointer" onclick="window.location.href='/'">
-                <i class="fa-solid fa-layer-group text-xl text-indigo-500"></i>
-                <span>PDF<span class="text-indigo-600">Expert</span></span>
+    <!-- FontAwesome: Non-blocking Lazy Load -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+
+    <!-- Critical In-line CSS for Premium UI/UX (Glassmorphism & Focus) -->
+    <style>
+        /* Smooth Background Gradients & Glass Effects */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-blur: blur(16px);
+            --hover-lift: translateY(-4px);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .theme-dark {
+            --glass-bg: rgba(15, 23, 42, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            background: linear-gradient(-45deg, #f8fafc, #e2e8f0, #f1f5f9, #ffffff);
+            background-size: 400% 400%;
+            animation: softGradient 15s ease infinite;
+        }
+        .theme-dark body {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #020617);
+            background-size: 400% 400%;
+            animation: softGradient 15s ease infinite;
+        }
+        @keyframes softGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Applying Glassmorphism */
+        .glass-nav, .feature-card, .tools-grid > div {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            transition: var(--transition-smooth);
+        }
+        .feature-card:hover, .tools-grid > div:hover {
+            transform: var(--hover-lift);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+        /* Accessibility: Strict Focus Management */
+        .focus-visible-ring:focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        .skip-to-main:focus {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    </style>
+
+    <!-- Comprehensive Schema.org Architecture -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.pdfexprt.xyz/#webapp",
+          "name": "E-X-P-R-T",
+          "url": "https://www.pdfexprt.xyz/",
+          "description": "Enterprise-grade browser-based offline tools for PDF, Image, Video, and Text processing.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires HTML5, CSS3, JavaScript, and Web Workers.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "100% Offline Processing",
+            "Zero Server Uploads",
+            "High-Performance Web Worker Architecture",
+            "Privacy First Design"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.pdfexprt.xyz/#website",
+          "url": "https://www.pdfexprt.xyz/",
+          "name": "E-X-P-R-T",
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.pdfexprt.xyz/?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://www.pdfexprt.xyz/#organization",
+          "name": "E-X-P-R-T",
+          "url": "https://www.pdfexprt.xyz/",
+          "logo": "https://www.pdfexprt.xyz/assets/logo.png"
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body class="theme-light">
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-to-main focus-visible-ring sr-only focus:not-sr-only">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav id="site-navbar" class="glass-nav sticky-nav" aria-label="Main Navigation">
+        <div class="nav-container max-w-layout">
+            
+            <div class="brand-section">
+                <a href="/" class="logo focus-visible-ring" aria-label="E-X-P-R-T Home">E-X-P-R-T</a>
+                <span class="badge offline-badge" aria-label="Privacy Status: 100% Offline, verified">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> 
+                    <span>100% Offline</span>
+                </span>
             </div>
             
-            <div class="hidden md:flex items-center space-x-8 font-medium text-slate-600 text-sm">
-                <a href="/" class="text-blue-600 border-b-2 border-blue-600 pb-1">Home</a>
-                <a href="#about" class="hover:text-blue-600 transition">About Tools</a>
-                <a href="#faq-section" class="hover:text-blue-600 transition">FAQs</a>
-            </div>
-            
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-1 border border-slate-200/60 rounded-full px-3 py-1 text-xs font-medium bg-white/50 shadow-sm">
-                    <span>🇺🇸 EN</span>
-                </div>
-            </div>
+            <button type="button" id="mobile-menu-btn" class="mobile-menu-btn touch-target focus-visible-ring" aria-controls="nav-links" aria-expanded="false" aria-label="Open Navigation Menu">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+
+            <ul id="nav-links" class="nav-links" role="menubar">
+                <li role="none"><a href="#home" class="nav-link active focus-visible-ring" role="menuitem" aria-current="page">Home</a></li>
+                <li role="none"><a href="#tools-section" class="nav-link focus-visible-ring" role="menuitem">All Tools</a></li>
+                <li role="none">
+                    <a href="#favorites" class="nav-link focus-visible-ring" role="menuitem" aria-label="View Saved Favorites">
+                        Favorites <span id="fav-counter" class="fav-count" aria-live="polite" aria-atomic="true">0</span>
+                    </a>
+                </li>
+                <li role="none"><a href="#about" class="nav-link focus-visible-ring" role="menuitem">About</a></li>
+                <li role="none" class="nav-action-item">
+                    <button type="button" id="theme-toggle" class="theme-toggle-btn touch-target focus-visible-ring" aria-label="Switch to Dark Mode" aria-pressed="false">
+                        <i class="fa-solid fa-moon theme-icon" aria-hidden="true"></i>
+                    </button>
+                </li>
+            </ul>
         </div>
     </nav>
 
-    <main class="flex-grow">
-        <header id="main-header" class="max-w-7xl mx-auto px-6 pt-16 pb-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center content-section transition-opacity duration-300">
-            <div class="lg:col-span-6 space-y-6" id="hero-workspace">
-                <div class="space-y-4">
-                    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                        Free Online PDF Tools: <span class="text-blue-600">Merge, Split & Convert</span>
-                    </h1>
-                    <p class="text-lg text-slate-600 leading-relaxed max-w-lg">
-                        Manage your documents effortlessly with our suite of high-performance utilities. Your files never leave your device, ensuring complete privacy.
-                    </p>
-                </div>
-                
-                <div class="flex flex-wrap gap-4 pt-2">
-                    <div class="flex items-center space-x-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-emerald-100">
-                        <i class="fa-solid fa-shield-halved"></i> <span>Highly Secure & Offline</span>
-                    </div>
-                    <div class="flex items-center space-x-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-blue-100">
-                        <i class="fa-solid fa-cloud-arrow-down"></i> <span>No Cloud Uploads</span>
-                    </div>
-                    <div class="flex items-center space-x-2 bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-indigo-100">
-                        <i class="fa-solid fa-bolt"></i> <span>Lightning Fast</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-6 flex justify-center relative">
-                <div class="w-full max-w-lg glass-panel shadow-xl rounded-3xl p-8 transition duration-300 transform gpu-accelerate">
-                    <div class="flex items-center space-x-2 mb-6">
-                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
-                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
-                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
-                    </div>
-                    
-                    <div class="text-center py-8 space-y-4">
-                        <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-inner animate-pulse will-change-opacity">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
-                        <h2 class="text-xl font-bold text-slate-800">Select a Module</h2>
-                        <p class="text-sm text-slate-500 max-w-xs mx-auto">Choose a professional utility below to activate the workspace.</p>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <section id="our-tools" class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-200/50 content-section transition-opacity duration-300">
-            <div class="text-center space-y-2 mb-12">
-                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Our Premium Utility Modules</h2>
-                <p class="text-sm text-slate-500">Select a tool to start processing your files securely.</p>
-            </div>
+    <!-- Hero Section -->
+    <header id="hero-section" class="hero-container expanded" aria-expanded="true">
+        <div class="hero-content max-w-layout">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6" id="tools-grid">
-                
-                <a href="/merge-pdf/" class="group flex items-center p-5 bg-white border border-blue-300 rounded-2xl cursor-pointer shadow-[0_2px_8px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-                    <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-[14px] bg-blue-600 text-white text-2xl mr-4 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        <i class="fa-solid fa-file-circle-plus"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-[17px] font-bold text-slate-800 mb-0.5">Merge PDF</h3>
-                        <p class="text-[13px] text-slate-500 leading-snug">Combine & reorder PDFs.</p>
-                    </div>
-                </a>
+            <h1 class="hero-title" fetchpriority="high">E-X-P-R-T</h1>
+            <p class="hero-subtitle">Powerful Offline Tools for PDF, Image, Text, Video & More</p>
+            
+            <p class="hero-text">
+                All tools work completely offline inside your browser.<br>
+                No uploads. No server. No tracking. <strong>Privacy First.</strong>
+            </p>
 
-                <a href="/image-to-pdf/" class="group flex items-center p-5 bg-white border border-blue-300 rounded-2xl cursor-pointer shadow-[0_2px_8px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-                    <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-[14px] bg-blue-600 text-white text-2xl mr-4 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        <i class="fa-solid fa-file-image"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-[17px] font-bold text-slate-800 mb-0.5">Image to PDF</h3>
-                        <p class="text-[13px] text-slate-500 leading-snug">Advanced document creation.</p>
-                    </div>
-                </a>
-
-                <a href="/extract-pages/" class="group flex items-center p-5 bg-white border border-orange-300 rounded-2xl cursor-pointer shadow-[0_2px_8px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-                    <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-[14px] bg-orange-500 text-white text-2xl mr-4 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        <i class="fa-solid fa-file-export"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-[17px] font-bold text-slate-800 mb-0.5">Extract Pages</h3>
-                        <p class="text-[13px] text-slate-500 leading-snug">Isolate specific ranges.</p>
-                    </div>
-                </a>
-
-                <a href="/delete-page/" class="group flex items-center p-5 bg-white border border-amber-300 rounded-2xl cursor-pointer shadow-[0_2px_8px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-                    <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-[14px] bg-amber-500 text-white text-2xl mr-4 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-[17px] font-bold text-slate-800 mb-0.5">Delete Page</h3>
-                        <p class="text-[13px] text-slate-500 leading-snug">Remove page ranges.</p>
-                    </div>
-                </a>
-
-                <a href="/image-resizer/" class="group flex items-center p-5 bg-white border border-red-300 rounded-2xl cursor-pointer shadow-[0_2px_8px_rgb(0,0,0,0.04)] hover:shadow-lg transition-all duration-300">
-                    <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-[14px] bg-red-500 text-white text-2xl mr-4 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        <i class="fa-solid fa-arrows-up-down-left-right"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-[17px] font-bold text-slate-800 mb-0.5">Image Resizer</h3>
-                        <p class="text-[13px] text-slate-500 leading-snug">Advanced resizing offline.</p>
-                    </div>
-                </a>
-                
+            <form id="search-form" class="search-wrapper" role="search" aria-label="Search offline tools">
+                <label for="search-input" class="sr-only">Search for a tool</label>
+                <div class="search-input-group">
+                    <i class="fa-solid fa-search search-icon" aria-hidden="true"></i>
+                    <!-- Added accesskey and descriptive placeholder for better UX -->
+                    <input type="search" id="search-input" class="search-input focus-visible-ring" placeholder="Search tools (Press Ctrl+K)..." autocomplete="off" spellcheck="false" role="searchbox" aria-controls="tools-container">
+                    <button type="reset" id="clear-search-icon" class="clear-search-btn focus-visible-ring hidden" aria-label="Clear search field">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
                 </div>
+            </form>
+
+            <button type="button" id="explore-cta-btn" class="cta-button primary-btn focus-visible-ring" aria-label="Scroll down to Explore All Offline Tools">
+                Explore All Tools <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+
+            <div class="hero-features" aria-label="Platform Core Features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-wifi feature-icon" aria-hidden="true"></i>
+                    <span>100% Offline</span>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-cloud-arrow-up feature-icon" aria-hidden="true"></i>
+                    <span>No Upload</span>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-user-shield feature-icon" aria-hidden="true"></i>
+                    <span>Privacy First</span>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-bolt feature-icon" aria-hidden="true"></i>
+                    <span>Fast Processing</span>
+                </div>
+            </div>
+        </div>
+        
+        <button type="button" id="hero-collapse-btn" class="collapse-btn touch-target focus-visible-ring" aria-label="Collapse Hero Section" aria-controls="hero-section">
+            <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main" class="main-layout max-w-layout">
+        
+        <!-- Filter Categories -->
+        <section id="categories-section" class="categories-section" aria-label="Filter Tools by Category">
+            <div class="categories-wrapper scroll-snapping" id="category-filters" role="tablist" aria-label="Tool Categories">
+                <button type="button" class="category-btn active focus-visible-ring" data-category="all" role="tab" aria-selected="true" aria-controls="tools-container">All</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="pdf" role="tab" aria-selected="false" aria-controls="tools-container">PDF</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="image" role="tab" aria-selected="false" aria-controls="tools-container">Image</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="converter" role="tab" aria-selected="false" aria-controls="tools-container">Converter</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="video" role="tab" aria-selected="false" aria-controls="tools-container">Video</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="audio" role="tab" aria-selected="false" aria-controls="tools-container">Audio</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="text" role="tab" aria-selected="false" aria-controls="tools-container">Text</button>
+                <button type="button" class="category-btn focus-visible-ring" data-category="utility" role="tab" aria-selected="false" aria-controls="tools-container">Utility</button>
+                
+                <button type="button" class="category-btn favorites-btn focus-visible-ring" data-category="favorites" role="tab" aria-selected="false" aria-controls="tools-container">
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i> Favorites
+                </button>
+            </div>
         </section>
 
-        <section id="about" class="max-w-7xl mx-auto px-6 py-16 border-t border-slate-200/50 bg-white rounded-3xl my-8 shadow-sm content-section transition-opacity duration-300">
-            <div class="max-w-4xl mx-auto text-center space-y-6">
-                <h2 class="text-3xl font-extrabold text-slate-900">Why Choose Our Client-Side PDF Editor?</h2>
-                <p class="text-slate-600 leading-relaxed text-left md:text-center">
-                    In an era where digital privacy is paramount, uploading sensitive legal, financial, or personal documents to cloud servers poses a significant risk. 
-                    <strong>PDFExpert</strong> revolutionizes document management by utilizing advanced <em>client-side processing</em>. 
-                </p>
-                <div class="grid md:grid-cols-3 gap-8 text-left mt-8 pt-8 border-t border-slate-100">
-                    <div>
-                        <h3 class="font-bold text-slate-800 mb-2"><i class="fa-solid fa-lock text-blue-500 mr-2"></i> Absolute Privacy</h3>
-                        <p class="text-sm text-slate-500">Zero data retention. Your files are processed in your browser's memory and are instantly destroyed once you close the tab.</p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 mb-2"><i class="fa-solid fa-rocket text-indigo-500 mr-2"></i> Unmatched Speed</h3>
-                        <p class="text-sm text-slate-500">By eliminating upload and download wait times, our browser-based PDF editor works instantly, saving you valuable time.</p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 mb-2"><i class="fa-solid fa-laptop-code text-emerald-500 mr-2"></i> No Installation</h3>
-                        <p class="text-sm text-slate-500">Access enterprise-grade document tools directly from any modern web browser without downloading bulky software.</p>
-                    </div>
-                </div>
+        <!-- Tools Grid -->
+        <section id="tools-section" class="tools-section" aria-label="Available Tools List">
+            
+            <div id="tools-container" class="tools-grid" aria-live="polite" aria-atomic="false" role="region" aria-label="Tools Grid">
+                <!-- JavaScript will inject high-demand SEO-friendly tools here (e.g., <a href="/merge-pdf.html">) -->
+            </div>
+            
+            <div id="no-results" class="no-results-state hidden" aria-hidden="true">
+                <i class="fa-solid fa-magnifying-glass-minus empty-icon" aria-hidden="true"></i>
+                <h3 class="empty-title">No tools found</h3>
+                <p class="empty-description">Try searching with different keywords or checking your spelling.</p>
+                <button type="button" id="clear-search-btn-fallback" class="secondary-btn mt-4 focus-visible-ring">Clear Search</button>
             </div>
         </section>
         
-        <section id="faq-section" class="max-w-7xl mx-auto px-6 py-16 mb-8 content-section transition-opacity duration-300">
-            </section>
     </main>
 
-    <footer class="glass-panel border-t border-slate-200/60 pt-16 pb-8 text-xs text-slate-500 mt-auto content-section">
-        </footer>
+    <!-- Footer -->
+    <footer id="site-footer" class="site-footer" role="contentinfo">
+        <div class="footer-container max-w-layout">
+            <div class="footer-brand">
+                <span class="footer-logo">E-X-P-R-T</span>
+                <p class="footer-tagline">100% Offline • Privacy First • No Uploads</p>
+            </div>
+            <nav class="footer-links" aria-label="Footer Navigation">
+                <a href="#privacy" class="focus-visible-ring">Privacy Policy</a>
+                <a href="#terms" class="focus-visible-ring">Terms of Service</a>
+                <a href="#contact" class="focus-visible-ring">Contact</a>
+            </nav>
+            <div class="footer-copyright">
+                <p>&copy; 2026 E-X-P-R-T. All offline rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Deferred Non-blocking JavaScript Execution -->
+    <script src="script.js" defer></script>
 </body>
 </html>
